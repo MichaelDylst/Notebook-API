@@ -1,8 +1,8 @@
-let saveButton = document.getElementById("save-button");
+//let saveButton = document.getElementById("save-button");
 const APIUrl = 'http://localhost:3000'
+let form = document.getElementById('form-notebook-identifier');
 
-
-saveButton.onclick = async function(event){
+form.onsubmit = async function(event){
     event.preventDefault();
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
@@ -17,6 +17,14 @@ saveButton.onclick = async function(event){
         },
         body: JSON.stringify({title: titleField, description: textAreaField})
     });
-    console.log(response)
+
+    if(!response.ok){
+        throw new Error('Er is een probleem met het verzenden van de data');
+    }
+
+    const result = await response.json();
+    console.log(result.message);
+
+
 };
 
