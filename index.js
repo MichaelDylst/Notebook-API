@@ -9,8 +9,9 @@ const cors = require('cors');
 const app = express();
 const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
+const PORT = process.env.PORT;
 console.log(dbPass)
-
+console.log(PORT)
 
 // database-verbinding
 
@@ -27,10 +28,6 @@ client.connect();
 // gebruik CORS
 app.use(cors());
 app.use(express.json());
-
-const PORT = process.env.PORT || 3000;
-console.log(PORT);
-// eenvoudige route 
 
 app.get('/', (req, res) => {
     res.send('Hi! This server is currently running.')
@@ -49,3 +46,18 @@ app.post('/submit', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on:  https://localhost:${PORT}`);
 })
+
+
+
+
+
+/*async function checkConnection() {
+    try {
+      await client.connect();
+      console.log('Connected with database!');
+      client.end();  // Sluit de verbinding
+    } catch (err) {
+      console.error('Connection Failed:', err.message);
+    }
+  }
+  checkConnection();*/
