@@ -1,4 +1,6 @@
 let saveButton = document.getElementById("save-button");
+const APIUrl = 'http://localhost:3000'
+
 
 saveButton.onclick = async function(event){
     event.preventDefault();
@@ -8,7 +10,7 @@ saveButton.onclick = async function(event){
     console.log("De inhoud van het title-field is: " + titleField)
     console.log("De inhoud van het text-area-field is: " + textAreaField)
 
-    const response = await fetch('/submit', {
+    const response = await fetch(`${APIUrl}/submit` , {
         method:'POST',
         headers: {
             'Content-Type': 'application/json',

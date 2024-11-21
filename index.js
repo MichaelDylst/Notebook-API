@@ -4,7 +4,11 @@
 // kill -9 <PID> -> PID is het servernummer
 
 const express = require("express");
+const cors = require('cors');
 const app = express();
+
+// gebruik CORS
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
