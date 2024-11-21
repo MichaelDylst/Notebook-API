@@ -33,13 +33,12 @@ form{
 }
 
 .description-field{
+    text-align: left;
     width: 400px;
-    height: 200px;
-    margin-bottom: 20px;
-    text-align: center;
-    border:none;
-    border-radius: 36px;
+    height:auto;
+    margin-bottom: 36px;
 }
+
 
 .save-button{
     padding: 4px;
