@@ -24,17 +24,6 @@ const client = new Client({
 
 client.connect();
 
-/*async function checkConnection() {
-    try {
-      await client.connect();
-      console.log('Connected with database!');
-      client.end();  // Sluit de verbinding
-    } catch (err) {
-      console.error('Connection Failed:', err.message);
-    }
-  }
-  checkConnection();*/
-
 // gebruik CORS
 app.use(cors());
 app.use(express.json());
@@ -48,8 +37,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/submit', async (req, res) => {
+    const {title, description} = req.body;
+    const query = 'INSERT INTO notebook(title, description) VALUES($1, $2) RETURNING *';
+    const values = [title, description];
+    const result = await client.query(query, values)
 
-
+    // RETURN SUCCESSFULL RESPONSE 
+    res.json({message: 'Data succesfully saved!', note: result.rows[0]})
 })
 
 app.listen(PORT, () => {
