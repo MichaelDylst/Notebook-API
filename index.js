@@ -3,7 +3,7 @@
 // server afsluiten
 // kill -9 <PID> -> PID is het servernummer
 
-const express = require("express")
+const express = require("express");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
