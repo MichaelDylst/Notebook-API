@@ -24,7 +24,7 @@ form{
 
 }
 
-.text-field{
+.title-field{
     width: 100px;
     margin-bottom: 36px;
     text-align: center;
@@ -37,6 +37,10 @@ form{
     width: 400px;
     height:auto;
     margin-bottom: 36px;
+    border-radius: 8px;
+    line-height:1.5;
+    border: none;
+
 }
 
 
