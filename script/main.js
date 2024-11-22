@@ -7,8 +7,8 @@ form.onsubmit = async function(event){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
 
-    console.log("De inhoud van het title-field is: " + titleField)
-    console.log("De inhoud van het text-area-field is: " + textAreaField)
+    console.log("The content of the titlefield is:  " + titleField)
+    console.log("The content of the text-area is: " + textAreaField)
 
     const response = await fetch(`${APIUrl}/submit` , {
         method:'POST',
@@ -19,7 +19,7 @@ form.onsubmit = async function(event){
     });
 
     if(!response.ok){
-        throw new Error('Er is een probleem met het verzenden van de data');
+        throw new Error('There is a problem.');
     }
 
     const result = await response.json();
