@@ -39,6 +39,11 @@ async function showNotebook(){
     console.log(valueInput);
     const notebook = await fetchNotebooks();
     console.log(Object.values(notebook)[valueInput]);
+
+    let titleValue = Object.values(notebook)[valueInput].title;
+    let descriptionValue = Object.values(notebook)[valueInput].description;
+    // show the input values back on the form 
+    
 }
 
 readButton.onclick = () => {
