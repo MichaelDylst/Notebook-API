@@ -46,10 +46,9 @@ async function showNotebook(){
     const notebook = await fetchNotebooks();
     console.log(Object.values(notebook)[valueInput]);
 
-    let titleValue = Object.values(notebook)[valueInput].title;
-    let descriptionValue = Object.values(notebook)[valueInput].description;
-    // show the input values back on the form 
-
+    let titleValue = Object.values(notebook)[valueInput -1 ].title;
+    let descriptionValue = Object.values(notebook)[valueInput -1 ].description;
+    
     titleField.value = titleValue;
     textAreaField.value = descriptionValue;
 
