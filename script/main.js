@@ -1,6 +1,7 @@
 //let saveButton = document.getElementById("save-button");
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
+let readButton = document.getElementById('read-button');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -21,7 +22,6 @@ form.onsubmit = async function(event){
     if(!response.ok){
         throw new Error('There is a problem.');
     }
-
     const result = await response.json();
     console.log(result.message);
 };
