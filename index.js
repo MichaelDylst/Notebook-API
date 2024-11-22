@@ -2,16 +2,16 @@
 // lsof -i :3000
 // server afsluiten
 // kill -9 <PID> -> PID is het servernummer
-require('dotenv').config();
 
+
+require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
 const app = express();
 const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
 const PORT = process.env.PORT;
-console.log(dbPass)
-console.log(PORT)
+
 
 // database-verbinding
 
@@ -23,6 +23,7 @@ const client = new Client({
     port: 5432,
 });
 
+
 client.connect();
 
 // gebruik CORS
@@ -32,6 +33,10 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Hi! This server is currently running.')
 });
+
+app.listen(PORT, () => {
+    console.log(`Server running on:  https://localhost:${PORT}`);
+})
 
 app.post('/submit', async (req, res) => {
     const {title, description} = req.body;
@@ -43,9 +48,9 @@ app.post('/submit', async (req, res) => {
     res.json({message: 'Data succesfully saved!', note: result.rows[0]})
 })
 
-app.listen(PORT, () => {
-    console.log(`Server running on:  https://localhost:${PORT}`);
-})
+
+
+
 
 
 
