@@ -26,3 +26,14 @@ form.onsubmit = async function(event){
     console.log(result.message);
 };
 
+async function fetchNotebooks(){
+    const response = await fetch(`${APIUrl}/notebook`);
+    const notebooks = await response.json();
+    console.log(notebooks)
+}
+
+
+readButton.onclick = () => {
+    fetchNotebooks();
+}
+
