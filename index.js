@@ -23,15 +23,22 @@ const client = new Client({
     port: 5432,
 });
 
-
 client.connect();
 
 // gebruik CORS
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/notebook', async (req, res) => {
     res.send('Hi! This server is currently running.')
+    try{
+      const result = await client.query('SELECT * FROM notebook');
+      res.json = (result.rows); // res = response -> zet de response om in een json die het het de rows van de query weergeeft.
+    }catch(error){
+      console.error("Error fetching data: ", error);
+      res.status(500).send('Server Error');
+    }
+
 });
 
 app.listen(PORT, () => {
