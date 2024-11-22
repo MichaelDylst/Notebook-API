@@ -55,10 +55,15 @@ form{
 
 #button-container{
     display:flex; 
-    flex-flow: row;
-    justify-content: center;
+    flex-flow: column;
+    align-items: center;
     margin-top: 16px;
     width: 200px;
     background-color:#DEAA79 ;
+}
+
+.search-text{
+    height:20px;
+    margin-top: 10px;
 }
 
