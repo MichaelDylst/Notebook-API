@@ -1,5 +1,3 @@
-const { json } = require("express");
-
 //let saveButton = document.getElementById("save-button");
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
