@@ -22,7 +22,6 @@ const client = new Client({
 client.connect();
 
 // gebruik CORS
-
 app.use(cors());
 app.use(express.json());
 
