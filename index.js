@@ -24,6 +24,7 @@ const client = new Client({
     port: 5432,
 });
 
+
 client.connect();
 
 // gebruik CORS
@@ -33,6 +34,10 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Hi! This server is currently running.')
 });
+
+app.listen(PORT, () => {
+    console.log(`Server running on:  https://localhost:${PORT}`);
+})
 
 app.post('/submit', async (req, res) => {
     const {title, description} = req.body;
@@ -44,9 +49,7 @@ app.post('/submit', async (req, res) => {
     res.json({message: 'Data succesfully saved!', note: result.rows[0]})
 })
 
-app.listen(PORT, () => {
-    console.log(`Server running on:  https://localhost:${PORT}`);
-})
+
 
 
 
