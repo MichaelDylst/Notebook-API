@@ -1,6 +1,8 @@
 body{
     display:flex;
+    flex-flow: column;
     justify-content: center;
+    align-items: center;
     background-color:rgb(255, 230, 169);
     color: #659287;
     font-family: Tahoma, sans-serif;
@@ -43,8 +45,20 @@ form{
 
 }
 
-
 .button{
     margin-bottom: 16px;
+    border-radius: 10px;
+    border: none;
+    padding:8px;
+    margin-top:4px;
+}
+
+#button-container{
+    display:flex; 
+    flex-flow: row;
+    justify-content: center;
+    margin-top: 16px;
+    width: 200px;
+    background-color:#DEAA79 ;
 }
 
