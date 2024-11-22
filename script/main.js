@@ -24,7 +24,5 @@ form.onsubmit = async function(event){
 
     const result = await response.json();
     console.log(result.message);
-
-
 };
 
