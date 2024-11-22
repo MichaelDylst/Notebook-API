@@ -40,21 +40,22 @@ async function showNotebook(){
     // reset values 
     titleField.value = "";
     textAreaField.value = "";
-
     let valueInput = document.getElementById('search-input').value;
     console.log(valueInput);
     const notebook = await fetchNotebooks();
-    console.log(Object.values(notebook)[valueInput]);
+    //console.log(notebook);
 
-    let titleValue = Object.values(notebook)[valueInput -1 ].title;
-    let descriptionValue = Object.values(notebook)[valueInput -1 ].description;
-    
-    titleField.value = titleValue;
-    textAreaField.value = descriptionValue;
-
-    console.log(titleField)
-    console.log(textAreaField);
-
+    for(let i = 0; i < notebook.length; i++){
+        console.log(notebook[i].id);
+        if (notebook[i].id === valueInput){
+            let titleValue = notebook[i].title;
+            let descriptionValue = notebook[i].description;
+            titleField.value = titleValue;
+            textAreaField.value = descriptionValue;
+        }else{
+            textAreaField.value = "Sorry there is no entry for this ID, please select again."
+        }
+    }
 }
 
 readButton.onclick = () => {
