@@ -2,8 +2,6 @@
 // lsof -i :3000
 // server afsluiten
 // kill -9 <PID> -> PID is het servernummer
-
-
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
@@ -12,9 +10,7 @@ const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
 const PORT = process.env.PORT;
 
-
 // database-verbinding
-
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
@@ -26,6 +22,7 @@ const client = new Client({
 client.connect();
 
 // gebruik CORS
+
 app.use(cors());
 app.use(express.json());
 
