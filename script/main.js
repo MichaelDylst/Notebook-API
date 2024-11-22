@@ -35,6 +35,12 @@ async function fetchNotebooks(){
 }
 
 async function showNotebook(){
+    let titleField = document.getElementById("title-field");
+    let textAreaField = document.getElementById("text-area-field");
+    // reset values 
+    titleField.value = "";
+    textAreaField.value = "";
+
     let valueInput = document.getElementById('search-input').value;
     console.log(valueInput);
     const notebook = await fetchNotebooks();
@@ -43,7 +49,13 @@ async function showNotebook(){
     let titleValue = Object.values(notebook)[valueInput].title;
     let descriptionValue = Object.values(notebook)[valueInput].description;
     // show the input values back on the form 
-    
+
+    titleField.value = titleValue;
+    textAreaField.value = descriptionValue;
+
+    console.log(titleField)
+    console.log(textAreaField);
+
 }
 
 readButton.onclick = () => {
