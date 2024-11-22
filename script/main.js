@@ -31,11 +31,17 @@ form.onsubmit = async function(event){
 async function fetchNotebooks(){
     const response = await fetch(`${APIUrl}/notebook`);
     const notebooks = await response.json();
-    console.log(notebooks)
+    return notebooks;
 }
 
+async function showNotebook(){
+    let valueInput = document.getElementById('search-input').value;
+    console.log(valueInput);
+    const notebook = await fetchNotebooks();
+    console.log(Object.values(notebook)[valueInput]);
+}
 
 readButton.onclick = () => {
-    fetchNotebooks();
+    showNotebook();
 }
 
