@@ -1,7 +1,3 @@
-// checken of een server nog in gebruik is: 
-// lsof -i :3000
-// server afsluiten
-// kill -9 <PID> -> PID is het servernummer
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
@@ -9,6 +5,20 @@ const app = express();
 const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
 const PORT = process.env.PORT;
+const helmet = require('helmet');
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+      },
+    },
+  })
+);
 
 // database-verbinding
 const client = new Client({
@@ -34,7 +44,6 @@ app.get('/notebook', async (req, res) => {
       console.error("Error fetching data: ", error);
       res.status(500).send('Server Error');
     }
-
 });
 
 app.listen(PORT, () => {
