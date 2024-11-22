@@ -1,3 +1,5 @@
+const { json } = require("express");
+
 //let saveButton = document.getElementById("save-button");
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
@@ -28,3 +30,15 @@ form.onsubmit = async function(event){
 
 };
 
+
+
+const response = await fetch(`${APIUrl}/submit`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: json.stringify({title:titleField, description:textAreaField});
+})
+
+const result = await response.json();
+console.log(result.message);

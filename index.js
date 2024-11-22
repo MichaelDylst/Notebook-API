@@ -2,8 +2,9 @@
 // lsof -i :3000
 // server afsluiten
 // kill -9 <PID> -> PID is het servernummer
-require('dotenv').config();
 
+
+require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
 const app = express();
