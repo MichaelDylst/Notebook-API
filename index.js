@@ -5,20 +5,6 @@ const app = express();
 const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
 const PORT = process.env.PORT;
-const helmet = require('helmet');
-
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:"],
-      },
-    },
-  })
-);
 
 // database-verbinding
 const client = new Client({
@@ -35,8 +21,11 @@ client.connect();
 app.use(cors());
 app.use(express.json());
 
-app.get('/notebook', async (req, res) => {
+app.get('/', (req,res) => {
     res.send('Hi! This server is currently running.')
+});
+
+app.get('/notebook', async (req, res) => {
     try{
       const result = await client.query('SELECT * FROM notebook');
       res.json = (result.rows); // res = response -> zet de response om in een json die het het de rows van de query weergeeft.
