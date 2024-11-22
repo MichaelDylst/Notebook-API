@@ -28,7 +28,8 @@ app.get('/', (req,res) => {
 app.get('/notebook', async (req, res) => {
     try{
       const result = await client.query('SELECT * FROM notebook');
-      res.json = (result.rows); // res = response -> zet de response om in een json die het het de rows van de query weergeeft.
+      res.json(result.rows); // res = response -> zet de response om in een json die het het de rows van de query weergeeft.
+      res.send(result)
     }catch(error){
       console.error("Error fetching data: ", error);
       res.status(500).send('Server Error');
