@@ -2,7 +2,9 @@
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
 let readButton = document.getElementById('read-button');
+let deleteButton = document.getElementById('delete-button');
 let updateButton = document.getElementById('update-button');
+
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -61,6 +63,25 @@ async function showNotebook(){
     textAreaField.value = "Sorry there is no entry for this ID, please select again."
 }
 
+
+async function deleteNote(){
+    let valueInput = parseInt(document.getElementById('search-input').value);
+
+    const response = await fetch(`${APIUrl}/delete`,{
+        method: 'DELETE',
+        headers: {
+            'Content-type':'application/json'
+        },
+        body: JSON.stringify({id: valueInput})
+    })
+
+    if (!response.ok){
+        throw new Error('There is a problem.');
+    }
+    const result = await response.json();
+    console.log(`The result is: ${result}`)
+}
+
 async function updateNotebooks(){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
@@ -85,10 +106,18 @@ async function updateNotebooks(){
     console.log('Updated notebook: ', result)
 };
 
+
 readButton.onclick = () => {
     showNotebook();
 }
 
+
+deleteButton.onclick = () => {
+    deleteNote();
+}
+
+
 updateButton.onclick = () => {
     updateNotebooks();
 }
+

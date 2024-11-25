@@ -35,6 +35,15 @@ app.get('/notebook', async (req, res) => {
     }
 });
 
+
+app.delete('/delete', async (req, res) =>{
+    const {id} = req.body;
+    const query = 'DELETE FROM notebook WHERE id = $1';
+    const values = [id];
+    const result = await client.query(query, values);
+
+    res.json({message: 'Data successfully deleted', note: result.rows[0]})
+
 app.patch('/update', async (req,res) => {
   try{
     const {id, title, description} = req.body;
@@ -47,6 +56,7 @@ app.patch('/update', async (req,res) => {
   } catch(error){
     console.error("Error fetching update data", error)
   }
+
 })
 
 app.listen(PORT, () => {
