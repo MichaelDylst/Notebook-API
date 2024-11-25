@@ -1,10 +1,7 @@
-//let saveButton = document.getElementById("save-button");
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
-let readButton = document.getElementById('read-button');
-let deleteButton = document.getElementById('delete-button');
-let updateButton = document.getElementById('update-button');
-
+let notesContainer = document.getElementById('notebook-entries');
+let readButton = document.getElementById('read-button')
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -41,24 +38,24 @@ async function showNotebook(){
     let titleField = document.getElementById("title-field");
     let textAreaField = document.getElementById("text-area-field");
 
-    // reset values 
     titleField.value = "";
     textAreaField.value = "";
-    let valueInput = document.getElementById('search-input').value;
-    //console.log(typeof(valueInput));
     const notebook = await fetchNotebooks();
-    //console.log(notebook);
 
     for(let i = 0; i < notebook.length; i++){
-        //console.log(typeof(notebook[i].id));
-        //console.log(valueInput)
-        if (notebook[i].id == valueInput){
-            let titleValue = notebook[i].title;
-            let descriptionValue = notebook[i].description;
-            titleField.value = titleValue;
-            textAreaField.value = descriptionValue;
-            return;
-        }
+        console.log(notebook[i].id)
+        console.log(notebook[i].title)
+        console.log(notebook[i].description)
+        notesContainer.innerHTML += 
+        `<div class="notebook-single-container">
+        <h5>#${notebook[i].id}: ${notebook[i].title} </h5>
+        <p class="notebook-entry">${notebook[i].description}</p>
+        <span class="options">
+          <i onClick="editPost(this)" class="fas fa-edit"></i>
+          <i onClick="deletePost(this)" class="fas fa-trash-alt"></i>
+        </span>
+      </div>
+      `;
     }
     textAreaField.value = "Sorry there is no entry for this ID, please select again."
 }
@@ -112,12 +109,12 @@ readButton.onclick = () => {
 }
 
 
-deleteButton.onclick = () => {
+/*deleteButton.onclick = () => {
     deleteNote();
 }
 
 
 updateButton.onclick = () => {
     updateNotebooks();
-}
+}*/
 

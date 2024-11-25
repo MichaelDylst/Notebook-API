@@ -27,14 +27,13 @@ app.get('/', (req,res) => {
 
 app.get('/notebook', async (req, res) => {
     try{
-      const result = await client.query('SELECT * FROM notebook');
+      const result = await client.query('SELECT * FROM notebook ORDER BY id ASC');
       res.json(result.rows); // res = response -> zet de response om in een json die het het de rows van de query weergeeft.
     }catch(error){
       console.error("Error fetching data: ", error);
       res.status(500).send('Server Error');
     }
 });
-
 
 app.delete('/delete', async (req, res) =>{
     const {id} = req.body;

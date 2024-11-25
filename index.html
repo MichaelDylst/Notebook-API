@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notebook</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 </head>
 
 <body>
@@ -21,15 +23,26 @@
             <input type="text" id="title-field" class="title-field" placeholder="Title" required>
             <textarea rows="5" cols="30" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
                 <input type="submit" id="save-button" class="button" value="Save">  
+
         </div>
     </form>
-    <div id="button-container">
+    <!--<div id="button-container">
         <input type="number" id="search-input" class="search-text"  min="1" max="20">
-        <button id="read-button" class="button">Read</button>
+ 
         <button id="update-button" class="button">Update</button>
         <button id="delete-button" class="button">Delete</button>
-
-
+    </div>-->
+    
+    <div id="notebook-entries" class="notebook-entries-container">
+        <h2>Notebook Entries</h2>
+        <button id="read-button" class="button">Read</button>
+        <!--<div class="notebook-single-container">
+            <p class="notebook-entry">Hello world post 1</p>
+            <span class="options">
+                <i onClick="editPost(this)" class="fas fa-edit"></i>
+                <i  onClick="deletePost(this)" class="fas fa-trash-alt"></i>
+            </span>
+        </div>-->
     </div>
 
 <script src="script/main.js"></script>

@@ -1,6 +1,6 @@
 body{
     display:flex;
-    flex-flow: column;
+    flex-flow: row;
     justify-content: center;
     align-items: center;
     background-color:rgb(255, 230, 169);
@@ -14,7 +14,7 @@ form{
     flex-direction: column;
     align-items: center;
     background-color: #DEAA79;
-    width:700px;
+    width:500px;
     border-radius: 36px;
 }
 
@@ -53,14 +53,35 @@ form{
     margin-top:4px;
 }
 
-#button-container{
-    display:flex; 
+.notebook-entries-container{
+    display: flex; 
     flex-flow: column;
-    align-items: center;
-    margin-top: 16px;
-    width: 200px;
-    background-color:#DEAA79 ;
+    margin: 10px;
+    padding: 10px;
+    background-color: #DEAA79;
+    border-radius: 16px;
+    max-width: 400px;
+    max-height:400px;
+    overflow: auto;
 }
+
+.notebook-single-container{
+    border: 1px solid white;
+    border-radius: 4px;
+    margin: 4px;
+}
+
+.options{
+
+    padding: 4px;
+}
+
+.notebook-entry{
+
+    padding: 4px;
+}
+
+
 
 .search-text{
     height:20px;
