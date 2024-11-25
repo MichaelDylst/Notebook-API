@@ -2,6 +2,7 @@
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
 let readButton = document.getElementById('read-button');
+let clearButton = document.getElementById('clear-button');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -60,7 +61,22 @@ async function showNotebook(){
     textAreaField.value = "Sorry there is no entry for this ID, please select again."
 }
 
+const clearData = () => {
+    let titleField = document.getElementById("title-field");
+    let textAreaField = document.getElementById("text-area-field");
+    console.log(titleField.value);
+    console.log(textAreaField.value);
+
+    titleField.value = "";
+    textAreaField.value = "";
+
+};
+
 readButton.onclick = () => {
     showNotebook();
+}
+
+clearButton.onclick = () => {
+    clearData();
 }
 
