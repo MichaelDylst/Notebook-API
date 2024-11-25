@@ -62,8 +62,8 @@ async function showNotebook(){
 }
 
 async function updateNotebooks(){
-    let titleField = document.getElementById("title-field");
-    let textAreaField = document.getElementById("text-area-field");
+    let titleField = document.getElementById("title-field").value;
+    let textAreaField = document.getElementById("text-area-field").value;
     let idNumber = parseInt(document.getElementById('search-input'))
     console.log(idNumber)
 
@@ -80,7 +80,6 @@ async function updateNotebooks(){
 
 
 }
-
 
 readButton.onclick = () => {
     showNotebook();
