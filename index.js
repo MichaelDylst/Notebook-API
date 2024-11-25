@@ -35,6 +35,20 @@ app.get('/notebook', async (req, res) => {
     }
 });
 
+app.patch('/update', async (req,res) => {
+  try{
+    const {id, title, description} = req.body;
+    const query =  `UPDATE notebook SET title: title, description: description WHERE id = id `;
+    const values = [id, title, description];
+    const result = await client.query(query, values);
+
+    res.json({message: 'Data successfully updated!', note: result.rows[0]})
+
+  } catch(error){
+    console.error("Error fetching update data", error)
+  }
+})
+
 app.listen(PORT, () => {
     console.log(`Server running on:  https://localhost:${PORT}`);
 })

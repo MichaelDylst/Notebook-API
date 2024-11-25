@@ -64,7 +64,7 @@ async function showNotebook(){
 async function updateNotebooks(){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
-    let idNumber = parseInt(document.getElementById('search-input'))
+    let idNumber = parseInt(document.getElementById('search-input').value);
     console.log(idNumber)
 
     console.log("The content of the titlefield is:  " + titleField);
@@ -76,10 +76,10 @@ async function updateNotebooks(){
             'Content-type': 'application/json'
         },
         body: JSON.stringify({id: `${idNumber}`, title: titleField, description: textAreaField})
-    });
-
-
-}
+    })
+    const result = await response.json();
+    console.log('Updated notebook: ', result)
+};
 
 readButton.onclick = () => {
     showNotebook();
