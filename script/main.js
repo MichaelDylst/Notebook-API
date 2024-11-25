@@ -46,18 +46,30 @@ async function showNotebook(){
         console.log(notebook[i].id)
         console.log(notebook[i].title)
         console.log(notebook[i].description)
+
+        const limitedDescription = notebook[i].description.length > 100
+        ? notebook[i].description.slice(0,40) + "..."
+        : notebook[i].description;
+
         notesContainer.innerHTML += 
-        `<div class="notebook-single-container">
-        <h5>#${notebook[i].id}: ${notebook[i].title} </h5>
-        <p class="notebook-entry">${notebook[i].description}</p>
-        <span class="options">
-          <i onClick="editPost(this)" class="fas fa-edit"></i>
-          <i onClick="deletePost(this)" class="fas fa-trash-alt"></i>
-        </span>
-      </div>
+        `
+        <div class="notebook-single-container">
+            <div class="title">
+                <h5>#${notebook[i].id}: ${notebook[i].title} </h5>
+            </div>
+            <div class="notebook-entry">
+                <p class="entry">${limitedDescription}</p>
+            </div>
+            <div class="options">
+                <span>
+                    <i onClick="editPost(this)" class="fas fa-edit"></i>
+                    <i onClick="deletePost(this)" class="fas fa-trash-alt"></i>
+                </span>
+            </div>
+        </div>
       `;
     }
-    textAreaField.value = "Sorry there is no entry for this ID, please select again."
+
 }
 
 
@@ -103,18 +115,6 @@ async function updateNotebooks(){
     console.log('Updated notebook: ', result)
 };
 
-
-readButton.onclick = () => {
+document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
-}
-
-
-/*deleteButton.onclick = () => {
-    deleteNote();
-}
-
-
-updateButton.onclick = () => {
-    updateNotebooks();
-}*/
-
+})
