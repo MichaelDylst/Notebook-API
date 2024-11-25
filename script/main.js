@@ -4,7 +4,7 @@ let notesContainer = document.getElementById('notebook-entries');
 let readButton = document.getElementById('read-button')
 
 form.onsubmit = async function(event){
-    event.preventDefault();
+    //event.preventDefault();
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
 

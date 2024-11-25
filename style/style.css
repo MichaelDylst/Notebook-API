@@ -10,7 +10,6 @@ body{
     background-color: rgb(247, 247, 247);
     color: rgb(150,150,150);
     font-family: Tahoma, sans-serif;
-
 }
 
 form{
@@ -39,7 +38,7 @@ form{
     display:grid;
     grid-template-columns: repeat(2,1fr);
     gap:10px;
-
+    overflow:auto;
 }
 
 .title-field{
@@ -80,7 +79,13 @@ form{
     text-align: center;
     box-sizing: border-box;
 }
+.notebook-single-container:hover{
+    background-color: rgb(250,250,250);
+}
 
+.options{
+    cursor:pointer;
+}
 
 h5{
     margin-top:0;
@@ -89,7 +94,7 @@ h5{
 }
 
 .entry{
-    margin-bottom:4px;
+    margin:0;
     font-size: 0.5rem;
 }
 
