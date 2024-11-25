@@ -27,7 +27,7 @@ form{
 }
 
 .title-field{
-    width: 100px;
+    width: 150px;
     margin-bottom: 36px;
     text-align: center;
     border-radius: 4px;
@@ -53,13 +53,25 @@ form{
     margin-top:4px;
 }
 
-#button-container{
+#button-container-top{
     display:flex; 
     flex-flow: column;
     align-items: center;
     margin-top: 16px;
-    width: 200px;
+    width: 100px;
     background-color:#DEAA79 ;
+    border-radius: 16px;
+}
+
+#button-container-bottom{
+    display:flex;
+    background-color:#DEAA79 ;
+    width: 200px;
+    margin-top:4px;
+    border-radius: 16px;
+    align-items: center;
+    padding:10px;
+    justify-content: space-around;
 }
 
 .search-text{
