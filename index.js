@@ -43,6 +43,7 @@ app.delete('/delete', async (req, res) =>{
     const result = await client.query(query, values);
 
     res.json({message: 'Data successfully deleted', note: result.rows[0]})
+});
 
 app.patch('/update', async (req,res) => {
   try{
