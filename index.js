@@ -38,7 +38,7 @@ app.get('/notebook', async (req, res) => {
 app.patch('/update', async (req,res) => {
   try{
     const {id, title, description} = req.body;
-    const query =  `UPDATE notebook SET title: title, description: description WHERE id = id `;
+    const query =  `UPDATE notebook SET title= $2, description= $3 WHERE id = $1`;
     const values = [id, title, description];
     const result = await client.query(query, values);
 

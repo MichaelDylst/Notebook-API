@@ -75,8 +75,12 @@ async function updateNotebooks(){
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({id: `${idNumber}`, title: titleField, description: textAreaField})
+        body: JSON.stringify({id: idNumber, title: titleField, description: textAreaField})
     })
+    if (!response.ok) {
+        throw new Error('Failed to update notebook');
+    }
+
     const result = await response.json();
     console.log('Updated notebook: ', result)
 };
