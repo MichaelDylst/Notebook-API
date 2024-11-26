@@ -5,14 +5,105 @@
 
 body{
     display:flex;
-    flex-direction: row;
+    flex-direction:row;
+    justify-content: center;
+    background-color: rgb(228, 230, 235);
+    font-family: Helvetica, sans-serif;
 }
 
+.form-notebook{
+    display: flex;
+    flex-direction:column;
+    background-color: rgb(235, 239, 246);
+    height:600px;
+}
 
+.notebook-container{
+    display: flex;
+    flex-direction:column;
+    margin-left:16px;
+    margin-right:16px;
+    margin-top: 120px;
+    background-color:rgb(216, 228, 247);
+    border-radius: 16px;
+}
 
+.title-field{
+    border:none;
+    margin-bottom: 4px;
+    background-color:rgb(216, 228, 247);
+    color:rgb(58, 129, 242);
+    border-radius: 16px;
+    text-align: center;
+    padding:4px;
+}
 
+.description-field{
+    border:none;
+    margin-bottom: 16px;
+    background-color:rgb(216, 228, 247);
+    color:rgb(58, 129, 242);
+    resize: none;
+    height:50vh;
+}
 
+.button{
+    border:none;
+    background-color:rgb(171, 200, 246);
+    color:rgb(58, 129, 242);
+    border:1px solid rgb(58, 129, 242);
+    border-radius: 16px;
+    padding:8px;
+    font-size: medium;
+}
 
+.notebook-entries{
+    display:flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background-color: rgb(235, 239, 246);
+    padding:30px;
+    border-right: 1px solid rgba(216, 212, 213, 0.8);
+    height:600px;
+    overflow:auto;
+}
 
+.notebook-header{
+    position: sticky;
+    top:0;
+    text-align: left;
+    color:rgb(173, 201, 246);
+    border-bottom:1px solid rgba(216, 212, 213, 0.8);
+    margin-bottom: 16px; 
+    font-size: 0.7rem;
+}
 
+.notebook-single-container{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 200px;
+    height: 100px;
+    padding:16px;
+    background-color:rgb(216, 228, 247);
+    border-radius: 24px;
+    border: 1px solid rgba(216, 212, 213, 0.8);
+    box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
+    margin-bottom: 16px;
+    color:rgb(116, 166, 245);
+    overflow:hidden;
+}
 
+.entry{
+    margin:0;
+    font-size:0.8rem;
+    font-weight: 400;
+}
+
+.title-container{
+    margin:0;
+    font-size:1rem;
+    font-weight:400;
+    border-bottom: 1px solid rgb(159, 193, 251);;
+}
