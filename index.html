@@ -8,30 +8,27 @@
 </head>
 
 <body>
+    <div id="notebook" class="notebook-entries">
+        <div class="notebook-header"> 
+            <h2 class="title">Notebook Entries</h2>
+            <i class="fa-solid fa-plus"></i>
+        </div>
+       
+        <div id="notebook-entries" class="notebook-entries-container">
+        </div>
+    </div>
+
     <form id="form-notebook-identifier" class="form-notebook">
         <header class="notebook-header">
-            <h1>NOTEBOOK</h1>
-            <div id="read-list">
-                <ul class="notebook-list">
-
-                </ul>
-            </div>
+            <h1 class="title">NOTEBOOK</h1>
         </header>
         <div class="notebook-container">
             <input type="text" id="title-field" class="title-field" placeholder="Title" required>
-            <textarea rows="5" cols="30" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
-                <input type="submit" id="save-button" class="button" value="Save">  
+            <textarea rows="" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
+            <input type="submit" id="save-button" class="button" value="Save">  
         </div>
     </form>
-    <div id="button-container">
-        <input type="number" id="search-input" class="search-text"  min="1" max="20">
-        <button id="read-button" class="button">Read</button>
-        <button id="update-button" class="button">Update</button>
-        <button id="delete-button" class="button">Delete</button>
-
-
-    </div>
-
+<script src="https://kit.fontawesome.com/c23b68ee2a.js" crossorigin="anonymous"></script>
 <script src="script/main.js"></script>
 </body>
 

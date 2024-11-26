@@ -1,10 +1,7 @@
-//let saveButton = document.getElementById("save-button");
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
-let readButton = document.getElementById('read-button');
-let deleteButton = document.getElementById('delete-button');
-let updateButton = document.getElementById('update-button');
-
+let notesContainer = document.getElementById('notebook-entries');
+let readButton = document.getElementById('read-button')
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -29,6 +26,7 @@ form.onsubmit = async function(event){
     console.log(result.message);
     textAreaField.value = "";
     titleField.value = "";
+    location.reload();
 };
 
 async function fetchNotebooks(){
@@ -41,31 +39,42 @@ async function showNotebook(){
     let titleField = document.getElementById("title-field");
     let textAreaField = document.getElementById("text-area-field");
 
-    // reset values 
     titleField.value = "";
     textAreaField.value = "";
-    let valueInput = document.getElementById('search-input').value;
-    //console.log(typeof(valueInput));
     const notebook = await fetchNotebooks();
-    //console.log(notebook);
 
     for(let i = 0; i < notebook.length; i++){
-        //console.log(typeof(notebook[i].id));
-        //console.log(valueInput)
-        if (notebook[i].id == valueInput){
-            let titleValue = notebook[i].title;
-            let descriptionValue = notebook[i].description;
-            titleField.value = titleValue;
-            textAreaField.value = descriptionValue;
-            return;
-        }
+        console.log(notebook[i].id)
+        console.log(notebook[i].title)
+        console.log(notebook[i].description)
+
+        const limitedDescription = notebook[i].description.length > 100
+        ? notebook[i].description.slice(0,30) + "..."
+        : notebook[i].description;
+
+        notesContainer.innerHTML += 
+        `
+        <div class="notebook-single-container">
+            <div class="title-div">
+                <h5 class="title-container">${notebook[i].title} </h5>
+                
+            </div>
+            <div class="notebook-entry">
+                <p class="entry">${limitedDescription}</p>
+            </div>
+            <div class="options">
+                <span>
+                    <i onClick="editPost(this)" class="fas fa-edit"></i>
+                    <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
+                </span>
+            </div>
+        </div>
+      `;
+      
     }
-    textAreaField.value = "Sorry there is no entry for this ID, please select again."
+
 }
-
-
 async function deleteNote(){
-    let valueInput = parseInt(document.getElementById('search-input').value);
 
     const response = await fetch(`${APIUrl}/delete`,{
         method: 'DELETE',
@@ -106,18 +115,6 @@ async function updateNotebooks(){
     console.log('Updated notebook: ', result)
 };
 
-
-readButton.onclick = () => {
+document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
-}
-
-
-deleteButton.onclick = () => {
-    deleteNote();
-}
-
-
-updateButton.onclick = () => {
-    updateNotebooks();
-}
-
+})
