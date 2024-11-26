@@ -90,9 +90,11 @@ async function deleteNote(){
                 })
                     const result = await response.json();
                     noteContainer.remove()
+                    alert("Note deleted sucessfully")
                 }
                 catch(error){
                     console.error(error)
+                    alert("There was an error. Please try again.", error)
                 }}
 
             });
