@@ -2,11 +2,18 @@ const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
 let notesContainer = document.getElementById('notebook-entries');
 let readButton = document.getElementById('read-button')
+const dataMode = false;
 
 form.onsubmit = async function(event){
     event.preventDefault();
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
+
+    if(dataMode = true){
+        // execute editNote()
+    }else{
+        // execute createNote()
+    }
 
     console.log("The content of the titlefield is:  " + titleField)
     console.log("The content of the text-area is: " + textAreaField)
@@ -60,16 +67,15 @@ async function showNotebook(){
             </div>
             <div class="options">
                 <span>
-                    <i onClick="editPost(this)" class="fas fa-edit"></i>
+                    <i onClick="editNote(this)" class="fas fa-edit"></i>
                     <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                 </span>
             </div>
         </div>
-      `;
-      
-    }
+      `;    
+    }};
 
-}
+
 async function deleteNote(){
     const deleteButtons = document.querySelectorAll('.fa-trash-alt');
 
@@ -93,27 +99,47 @@ async function deleteNote(){
             location.reload();
         });
     });
+}
+
+async function createNote(){
     
 }
 
-async function updateNotebooks(){
-    let titleField = document.getElementById("title-field").value;
-    let textAreaField = document.getElementById("text-area-field").value;
-    let idNumber = parseInt(document.getElementById('search-input').value);
+async function editNote(){
+    dataMode = True;
+    let titleField = document.getElementById("title-field");
+    let textAreaField = document.getElementById("text-area-field");
+    
+    const allNotesContainer = document.getElementById('notebook-entries');
 
-    const response = await fetch(`${APIUrl}/update`, {
-        method:'PATCH', 
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({id: idNumber, title: titleField, description: textAreaField})
+    allNotesContainer.addEventListener('click', async function(event){
+        if(event.target.classList.contains("fa-edit")){
+            event.stopPropagation();
+            console.log("click")
+            const noteContainer = event.target.closest('.notebook-single-container');
+            const noteId = noteContainer.firstElementChild.getAttribute('data-id');
+            const title = noteContainer.querySelector('.title-container').textContent;
+            const description = noteContainer.querySelector('.entry').textContent;
+            
+            titleField.value = title;
+            textAreaField.value = description;
+
+            /*const response = await fetch(`${APIUrl}/update`, {
+                method:'PATCH', 
+                headers: {
+                    'Content-type': 'application/json'
+                },
+        body: JSON.stringify({id: noteId, title: titleField, description: textAreaField})
     })
     if (!response.ok) {
         throw new Error('Failed to update notebook');
     }
 
     const result = await response.json();
+*/
 
+        }
+    }, {once:true});
 };
 
 document.addEventListener('DOMContentLoaded', () =>{
