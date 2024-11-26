@@ -4,7 +4,7 @@ let notesContainer = document.getElementById('notebook-entries');
 let readButton = document.getElementById('read-button')
 
 form.onsubmit = async function(event){
-    //event.preventDefault();
+    event.preventDefault();
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
 
@@ -26,6 +26,7 @@ form.onsubmit = async function(event){
     console.log(result.message);
     textAreaField.value = "";
     titleField.value = "";
+    location.reload();
 };
 
 async function fetchNotebooks(){
@@ -48,14 +49,15 @@ async function showNotebook(){
         console.log(notebook[i].description)
 
         const limitedDescription = notebook[i].description.length > 100
-        ? notebook[i].description.slice(0,40) + "..."
+        ? notebook[i].description.slice(0,30) + "..."
         : notebook[i].description;
 
         notesContainer.innerHTML += 
         `
         <div class="notebook-single-container">
-            <div class="title">
-                <h5>#${notebook[i].id}: ${notebook[i].title} </h5>
+            <div class="title-div">
+                <h5 class="title-container">${notebook[i].title} </h5>
+                
             </div>
             <div class="notebook-entry">
                 <p class="entry">${limitedDescription}</p>
@@ -63,18 +65,16 @@ async function showNotebook(){
             <div class="options">
                 <span>
                     <i onClick="editPost(this)" class="fas fa-edit"></i>
-                    <i onClick="deletePost(this)" class="fas fa-trash-alt"></i>
+                    <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                 </span>
             </div>
         </div>
       `;
+      
     }
 
 }
-
-
 async function deleteNote(){
-    let valueInput = parseInt(document.getElementById('search-input').value);
 
     const response = await fetch(`${APIUrl}/delete`,{
         method: 'DELETE',

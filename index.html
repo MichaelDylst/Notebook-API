@@ -5,29 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notebook</title>
     <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-
 </head>
 
 <body>
-    <form id="form-notebook-identifier" class="form-notebook">
-        <header class="notebook-header">
-            <h1>NOTEBOOK</h1>
-        </header>
-        <div class="notebook-container">
-            <input type="text" id="title-field" class="title-field" placeholder="Title" required>
-            <textarea rows="5" cols="30" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
-            <input type="submit" id="save-button" class="button" value="Save">  
-
-        </div>
-    </form>
-    
     <div id="notebook" class="notebook-entries">
-        <h2>Notebook Entries</h2>
+        <div class="notebook-header"> 
+            <h2 class="title">Notebook Entries</h2>
+            <i class="fa-solid fa-plus"></i>
+        </div>
+       
         <div id="notebook-entries" class="notebook-entries-container">
         </div>
     </div>
 
+    <form id="form-notebook-identifier" class="form-notebook">
+        <header class="notebook-header">
+            <h1 class="title">NOTEBOOK</h1>
+        </header>
+        <div class="notebook-container">
+            <input type="text" id="title-field" class="title-field" placeholder="Title" required>
+            <textarea rows="" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
+            <input type="submit" id="save-button" class="button" value="Save">  
+        </div>
+    </form>
+<script src="https://kit.fontawesome.com/c23b68ee2a.js" crossorigin="anonymous"></script>
 <script src="script/main.js"></script>
 </body>
 

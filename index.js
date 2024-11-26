@@ -6,7 +6,7 @@ const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
 const PORT = process.env.PORT;
 
-// database-verbinding
+
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
@@ -17,7 +17,6 @@ const client = new Client({
 
 client.connect();
 
-// gebruik CORS
 app.use(cors());
 app.use(express.json());
 
@@ -28,7 +27,7 @@ app.get('/', (req,res) => {
 app.get('/notebook', async (req, res) => {
     try{
       const result = await client.query('SELECT * FROM notebook ORDER BY id ASC');
-      res.json(result.rows); // res = response -> zet de response om in een json die het het de rows van de query weergeeft.
+      res.json(result.rows);
     }catch(error){
       console.error("Error fetching data: ", error);
       res.status(500).send('Server Error');
@@ -69,25 +68,5 @@ app.post('/submit', async (req, res) => {
     const values = [title, description];
     const result = await client.query(query, values)
 
-    // RETURN SUCCESSFULL RESPONSE 
     res.json({message: 'Data succesfully saved!', note: result.rows[0]})
 })
-
-
-
-
-
-
-
-
-
-/*async function checkConnection() {
-    try {
-      await client.connect();
-      console.log('Connected with database!');
-      client.end();  // Sluit de verbinding
-    } catch (err) {
-      console.error('Connection Failed:', err.message);
-    }
-  }
-  checkConnection();*/
