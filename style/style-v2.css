@@ -41,10 +41,10 @@ body{
     background-color:rgb(228, 235, 247);
     box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
     color:rgb(58, 129, 242);
-    border-radius: 16px;
+    border-radius: 8px;
     text-align: center;
-    padding:4px;
-    width:30%;
+    padding:8px;
+    width:50%;
 }
 .title-field:focus{
     outline:none;
@@ -56,7 +56,7 @@ body{
 .description-field{
     border:none;
     margin-bottom: 24px;
-    background-color:rgb(228, 235, 247);
+    background-color:rgb(237, 242, 250);
     color:rgb(58, 129, 242);
     resize: none;
     width:100%;
