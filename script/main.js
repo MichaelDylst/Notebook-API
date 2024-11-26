@@ -43,16 +43,16 @@ async function showNotebook(){
     textAreaField.value = "";
     const notebook = await fetchNotebooks();
 
-    for(let i = 0; i < notebook.length; i++){
-        const limitedDescription = notebook[i].description.length > 100
-        ? notebook[i].description.slice(0,30) + "..."
-        : notebook[i].description;
+    notebook.forEach(note => {
+        const limitedDescription = note.description.length > 100
+        ? note.description.slice(0,30) + "..."
+        : note.description;
 
         notesContainer.innerHTML += 
         `
         <div class="notebook-single-container">
-            <div class="title-div" data-id="${notebook[i].id}">
-                <h5 class="title-container">${notebook[i].title} </h5>
+            <div class="title-div" data-id="${note.id}">
+                <h5 class="title-container">${note.title} </h5>
                 
             </div>
             <div class="notebook-entry">
@@ -60,48 +60,59 @@ async function showNotebook(){
             </div>
             <div class="options">
                 <span>
-                    <i onClick="editPost(this)" class="fas fa-edit"></i>
+                    <i onClick="editNote(this)" class="fas fa-edit"></i>
                     <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                 </span>
             </div>
         </div>
       `;
       
-    }
+    })
 
 }
 async function deleteNote(){
-    const deleteButtons = document.querySelectorAll('.fa-trash-alt');
+    const notesContainer = document.getElementById('notebook-entries');
 
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', async function (event) {
+        notesContainer.addEventListener('click', async function (event) {
+            if(event.target.classList.contains('fa-trash-alt')){
+                event.stopPropagation();
+                const noteContainer = event.target.closest('.notebook-single-container');
+                const noteId = noteContainer.firstElementChild.getAttribute('data-id');
+
+                try{
+                    const response = await fetch(`${APIUrl}/delete`,{
+                    method: 'DELETE',
+                    headers: {
+                        'Content-type':'application/json'
+                    },
+                    body: JSON.stringify({id:noteId})
+                    
+                })
+                    const result = await response.json();
+                    noteContainer.remove()
+                }
+                catch(error){
+                    console.error(error)
+                }}
+
+            });
+}
+
+async function editNote(){
+    let titleField = document.getElementById("title-field").value;
+    let textAreaField = document.getElementById("text-area-field").value;
+
+    const editButtons = document.querySelectorAll(".fas fa-edit");
+    editButtons.forEach(button => {
+        button.addEventListener('click', async function (event){
             event.stopPropagation();
             const noteContainer = this.closest('.notebook-single-container');
             const noteId = noteContainer.firstElementChild.getAttribute('data-id');
+            console.log(noteId)
+        })
+    })
 
-            const response = await fetch(`${APIUrl}/delete`,{
-                method: 'DELETE',
-                headers: {
-                    'Content-type':'application/json'
-                },
-                body: JSON.stringify({id:noteId})
-            })
-            if (!response.ok){
-                throw new Error('There is a problem.');
-            }
-            const result = await response.json();
-            location.reload();
-        });
-    });
-    
-}
-
-async function updateNotebooks(){
-    let titleField = document.getElementById("title-field").value;
-    let textAreaField = document.getElementById("text-area-field").value;
-    let idNumber = parseInt(document.getElementById('search-input').value);
-
-    const response = await fetch(`${APIUrl}/update`, {
+    /*const response = await fetch(`${APIUrl}/update`, {
         method:'PATCH', 
         headers: {
             'Content-type': 'application/json'
@@ -113,7 +124,7 @@ async function updateNotebooks(){
     }
 
     const result = await response.json();
-
+        */      
 };
 
 document.addEventListener('DOMContentLoaded', () =>{
