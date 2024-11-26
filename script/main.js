@@ -44,10 +44,6 @@ async function showNotebook(){
     const notebook = await fetchNotebooks();
 
     for(let i = 0; i < notebook.length; i++){
-        console.log(notebook[i].id)
-        console.log(notebook[i].title)
-        console.log(notebook[i].description)
-
         const limitedDescription = notebook[i].description.length > 100
         ? notebook[i].description.slice(0,30) + "..."
         : notebook[i].description;
@@ -55,7 +51,7 @@ async function showNotebook(){
         notesContainer.innerHTML += 
         `
         <div class="notebook-single-container">
-            <div class="title-div">
+            <div class="title-div" data-id="${notebook[i].id}">
                 <h5 class="title-container">${notebook[i].title} </h5>
                 
             </div>
@@ -75,30 +71,35 @@ async function showNotebook(){
 
 }
 async function deleteNote(){
+    const deleteButtons = document.querySelectorAll('.fa-trash-alt');
 
-    const response = await fetch(`${APIUrl}/delete`,{
-        method: 'DELETE',
-        headers: {
-            'Content-type':'application/json'
-        },
-        body: JSON.stringify({id: valueInput})
-    })
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function (event) {
+            event.stopPropagation();
+            const noteContainer = this.closest('.notebook-single-container');
+            const noteId = noteContainer.firstElementChild.getAttribute('data-id');
 
-    if (!response.ok){
-        throw new Error('There is a problem.');
-    }
-    const result = await response.json();
-    console.log(`The result is: ${result}`)
+            const response = await fetch(`${APIUrl}/delete`,{
+                method: 'DELETE',
+                headers: {
+                    'Content-type':'application/json'
+                },
+                body: JSON.stringify({id:noteId})
+            })
+            if (!response.ok){
+                throw new Error('There is a problem.');
+            }
+            const result = await response.json();
+            location.reload();
+        });
+    });
+    
 }
 
 async function updateNotebooks(){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
     let idNumber = parseInt(document.getElementById('search-input').value);
-    console.log(idNumber)
-
-    console.log("The content of the titlefield is:  " + titleField);
-    console.log("The content of the text-area is: " + textAreaField);
 
     const response = await fetch(`${APIUrl}/update`, {
         method:'PATCH', 
@@ -112,7 +113,7 @@ async function updateNotebooks(){
     }
 
     const result = await response.json();
-    console.log('Updated notebook: ', result)
+
 };
 
 document.addEventListener('DOMContentLoaded', () =>{
