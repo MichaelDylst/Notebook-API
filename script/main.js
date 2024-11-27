@@ -1,32 +1,18 @@
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
 let notesContainer = document.getElementById('notebook-entries');
-let readButton = document.getElementById('read-button')
+let readButton = document.getElementById('read-button');
+let dataMode = false;
+let selectedNoteId = null;
 
 form.onsubmit = async function(event){
     event.preventDefault();
-    let titleField = document.getElementById("title-field").value;
-    let textAreaField = document.getElementById("text-area-field").value;
 
-    console.log("The content of the titlefield is:  " + titleField)
-    console.log("The content of the text-area is: " + textAreaField)
-
-    const response = await fetch(`${APIUrl}/submit` , {
-        method:'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({title: titleField, description: textAreaField})
-    });
-
-    if(!response.ok){
-        throw new Error('There is a problem.');
+    if(dataMode){
+        await updateNote()
+    }else{
+        await createNote()
     }
-    const result = await response.json();
-    console.log(result.message);
-    textAreaField.value = "";
-    titleField.value = "";
-    location.reload();
 };
 
 async function fetchNotebooks(){
@@ -60,16 +46,15 @@ async function showNotebook(){
             </div>
             <div class="options">
                 <span>
-                    <i onClick="editNote(this)" class="fas fa-edit"></i>
+                    <i onClick="fetchNote(this)" class="fas fa-edit"></i>
                     <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                 </span>
             </div>
         </div>
-      `;
-      
-    })
+      `;    
+    }};
 
-}
+
 async function deleteNote(){
     const notesContainer = document.getElementById('notebook-entries');
 
@@ -101,32 +86,26 @@ async function deleteNote(){
 }
 
 async function editNote(){
-    let titleField = document.getElementById("title-field").value;
-    let textAreaField = document.getElementById("text-area-field").value;
+    dataMode = True;
+    let titleField = document.getElementById("title-field");
+    let textAreaField = document.getElementById("text-area-field");
+    
+    const allNotesContainer = document.getElementById('notebook-entries');
 
-    const editButtons = document.querySelectorAll(".fas fa-edit");
-    editButtons.forEach(button => {
-        button.addEventListener('click', async function (event){
+    allNotesContainer.addEventListener('click', function(event){
+        if(event.target.classList.contains("fa-edit")){
             event.stopPropagation();
-            const noteContainer = this.closest('.notebook-single-container');
-            const noteId = noteContainer.firstElementChild.getAttribute('data-id');
-            console.log(noteId)
-        })
-    })
+            console.log("click")
+            const noteContainer = event.target.closest('.notebook-single-container');
+            selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
+            const title = noteContainer.querySelector('.title-container').textContent;
+            const description = noteContainer.querySelector('.entry').textContent;
+            
+            titleField.value = title;
+            textAreaField.value = description;
+        }
+    }, {once:true});
 
-    /*const response = await fetch(`${APIUrl}/update`, {
-        method:'PATCH', 
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({id: idNumber, title: titleField, description: textAreaField})
-    })
-    if (!response.ok) {
-        throw new Error('Failed to update notebook');
-    }
-
-    const result = await response.json();
-        */      
 };
 
 document.addEventListener('DOMContentLoaded', () =>{
