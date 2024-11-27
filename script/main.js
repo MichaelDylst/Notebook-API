@@ -1,6 +1,6 @@
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
-let notesContainer = document.getElementById('notebook-entries');
+let tBody = document.getElementById('table-body');
 let readButton = document.getElementById('read-button');
 let dataMode = false;
 let selectedNoteId = null;
@@ -34,34 +34,30 @@ async function showNotebook(){
         ? note.description.slice(0,30) + "..."
         : note.description;
 
-        notesContainer.innerHTML += 
+        tBody.innerHTML += 
         `
-        <div class="notebook-single-container">
-            <div class="title-div" data-id="${note.id}">
-                <h5 class="title-container">${note.title} </h5>
-                
-            </div>
-            <div class="notebook-entry">
-                <p class="entry">${limitedDescription}</p>
-            </div>
-            <div class="options">
-                <span>
-                    <i onClick="fetchNote(this)" class="fas fa-edit"></i>
+        <tr class="notebook-single-tr">
+            <div class="notebook-single-element" data-id="${note.id}">
+                <td>${note.title}</td>
+                <td>${note.description}</td>
+                <td class="actions">
+                    <i onClick="editNote(this)" class="fas fa-edit"></i>
                     <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
-                </span>
+                </td>
             </div>
-        </div>
-      `;    
+        </tr>
+        `
+    
     })};
 
-
 async function deleteNote(){
-    const notesContainer = document.getElementById('notebook-entries');
+    const tBodyContainer = document.getElementById('table-body');
+    console.log(tBodyContainer);
 
-        notesContainer.addEventListener('click', async function (event) {
+        tBodyContainer.addEventListener('click', async function (event) {
             if(event.target.classList.contains('fa-trash-alt')){
                 event.stopPropagation();
-                const noteContainer = event.target.closest('.notebook-single-container');
+                const noteContainer = event.target.closest('.notebook-single-tr');
                 const noteId = noteContainer.firstElementChild.getAttribute('data-id');
 
                 try{
