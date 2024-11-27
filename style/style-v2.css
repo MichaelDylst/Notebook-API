@@ -15,6 +15,8 @@ body{
     background-color: rgb(235, 239, 246);
     font-family: Helvetica, sans-serif;
     border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(118, 143, 255, 0.5);
+    border: 0.1rem solid rgba(118, 143, 255, 0.8);
 }
 
 .form-notebook{
@@ -22,6 +24,8 @@ body{
     justify-content: center;
     height:600px;
     width:60%;
+    background-color:rgba(228, 235, 247, 0.7);
+    
 }
 
 .notebook-container{
@@ -37,19 +41,19 @@ body{
 .title-field{
     border:none;
     margin-bottom: 8px;
-    background-color:rgb(228, 235, 247);
+    background-color:rgb(237, 242, 250);
     box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
     color:rgb(58, 129, 242);
     border-radius: 8px;
     text-align: center;
     padding:8px;
-    width:50%;
+    width:60%;
 }
 .title-field:focus{
-    outline:none;
+    outline:1px solid rgba(216, 212, 213, 0.8);
 }
 .description-field:focus{
-    outline:none;
+    outline:1px solid rgba(216, 212, 213, 0.8);;
 }
 
 .description-field{
@@ -61,17 +65,18 @@ body{
     width:100%;
     height:300px;
     box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
-    border-radius: 8px;
+    border-radius: 12px;
+    padding:16px
 }
 
 .button{
     border:none;
-    background-color:rgb(228, 235, 247);
+    background-color:rgb(237, 242, 250);
     color:rgb(58, 129, 242);
     border:1px solid rgba(58, 129, 242, 0.5);
     box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
     border-radius: 16px;
-    padding:4px;
+    padding:8px;
     font-size: 0.8rem;
     font-weight:600;
     width:30%;
@@ -91,19 +96,20 @@ body{
     width:40%;
 }
 
+
+
 .notebook-header{
     display:flex;
     position: sticky;
     top:0;
     z-index: 1;
-    color:rgb(173, 201, 246);
+    color:rgb(148, 187, 249);
     border-bottom:1px solid rgba(216, 212, 213, 0.8);
     margin-bottom: 24px; 
     font-size: 0.7rem;
     background-color:rgb(225, 233, 247);
     border-radius: 8px;
     padding: 16px;
-
 }
 
 .notebook-header h2{
@@ -116,7 +122,7 @@ body{
     align-items: flex-start;
     justify-content: space-between;
     width: 150px;
-    height: 100px;
+    height: 96px;
     padding:16px;
     background-color:rgb(228, 235, 247);
     border-radius: 24px;
@@ -124,8 +130,8 @@ body{
     box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
     margin-bottom: 16px;
     margin-left:8px;
+    margin-right:8px;
     color:rgb(150, 188, 248);
-
 }
 
 .notebook-single-container:hover{
@@ -135,8 +141,9 @@ body{
 
 .entry{
     margin:0;
-    font-size:0.8rem;
+    font-size:0.7rem;
     font-weight: 400;
+
 }
 
 .title-container{
@@ -148,4 +155,14 @@ body{
 
 .options{
     cursor:pointer;
+    transform: scale(.70);
+}
+
+.fa-edit:active{
+    transform: scale(.68);
+    
+}
+.fa-trash-alt:active{
+    transform: scale(.68);
+    
 }
