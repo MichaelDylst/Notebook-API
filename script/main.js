@@ -52,7 +52,7 @@ async function showNotebook(){
             </div>
         </div>
       `;    
-    }};
+    })};
 
 
 async function deleteNote(){
@@ -107,6 +107,55 @@ async function editNote(){
     }, {once:true});
 
 };
+
+
+async function updateNote(){
+    console.log(selectedNoteId)
+    let titleField = document.getElementById("title-field").value;
+    let textAreaField = document.getElementById("text-area-field").value;
+
+    const response = await fetch(`${APIUrl}/update`, {
+        method:'PATCH', 
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({id: selectedNoteId, title: titleField, description: textAreaField})
+    })
+    if (!response.ok) {
+    throw new Error(response.message);
+    }
+
+    const result = await response.json();
+
+    location.reload()
+}
+
+function fetchNote(){
+    dataMode = true;
+    console.log(dataMode);
+    let titleField = document.getElementById("title-field");
+    let textAreaField = document.getElementById("text-area-field");
+    
+    const allNotesContainer = document.getElementById('notebook-entries');
+
+    allNotesContainer.addEventListener('click', function(event){
+        if(event.target.classList.contains("fa-edit")){
+            event.stopPropagation();
+            console.log("click")
+            const noteContainer = event.target.closest('.notebook-single-container');
+            selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
+            const title = noteContainer.querySelector('.title-container').textContent;
+            const description = noteContainer.querySelector('.entry').textContent;
+            
+            titleField.value = title;
+            textAreaField.value = description;
+        }
+    }, {once:true});
+
+};
+
+
+
 
 document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
