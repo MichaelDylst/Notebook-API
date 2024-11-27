@@ -54,7 +54,7 @@ async function showNotebook(){
             <div class="notebook-single-element" data-id="${note.id}">
                 <td>${note.title}</td>
                 <td>${note.description}</td>
-                <td>
+                <td class="actions">
                     <i onClick="editNote(this)" class="fas fa-edit"></i>
                     <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                 </td>
