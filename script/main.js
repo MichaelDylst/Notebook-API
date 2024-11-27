@@ -95,7 +95,6 @@ async function editNote(){
     allNotesContainer.addEventListener('click', function(event){
         if(event.target.classList.contains("fa-edit")){
             event.stopPropagation();
-            console.log("click")
             const noteContainer = event.target.closest('.notebook-single-container');
             selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
             const title = noteContainer.querySelector('.title-container').textContent;
@@ -110,7 +109,6 @@ async function editNote(){
 
 
 async function updateNote(){
-    console.log(selectedNoteId)
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
 
@@ -132,7 +130,6 @@ async function updateNote(){
 
 function fetchNote(){
     dataMode = true;
-    console.log(dataMode);
     let titleField = document.getElementById("title-field");
     let textAreaField = document.getElementById("text-area-field");
     
@@ -141,7 +138,6 @@ function fetchNote(){
     allNotesContainer.addEventListener('click', function(event){
         if(event.target.classList.contains("fa-edit")){
             event.stopPropagation();
-            console.log("click")
             const noteContainer = event.target.closest('.notebook-single-container');
             selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
             const title = noteContainer.querySelector('.title-container').textContent;
