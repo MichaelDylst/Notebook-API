@@ -58,7 +58,7 @@ async function deleteNote(){
             if(event.target.classList.contains('fa-trash-alt')){
                 event.stopPropagation();
                 const noteContainer = event.target.closest('.notebook-single-tr');
-                const noteId = noteContainer.firstElementChild.getAttribute('data-id');
+                const noteId = noteContainer.nextElementSibling.getAttribute('data-id');
 
                 try{
                     const response = await fetch(`${APIUrl}/delete`,{
