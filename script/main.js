@@ -1,7 +1,6 @@
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
-let readButton = document.getElementById('read-button');
 let dataMode = false;
 let selectedNoteId = null;
 
@@ -38,21 +37,20 @@ async function showNotebook(){
         `
         <tr class="notebook-single-tr">
             <div class="notebook-single-element" data-id="${note.id}">
-                <td>${note.title}</td>
-                <td>${note.description}</td>
+                <td class="title-container">${note.title}</td>
+                <td class="description-container">${note.description}</td>
                 <td class="actions">
-                    <i onClick="editNote(this)" class="fas fa-edit"></i>
+                    <i onClick="fetchNote(this)" class="fas fa-edit"></i>
                     <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                 </td>
             </div>
         </tr>
         `
-    
+
     })};
 
 async function deleteNote(){
     const tBodyContainer = document.getElementById('table-body');
-    console.log(tBodyContainer);
 
         tBodyContainer.addEventListener('click', async function (event) {
             if(event.target.classList.contains('fa-trash-alt')){
@@ -129,15 +127,15 @@ function fetchNote(){
     let titleField = document.getElementById("title-field");
     let textAreaField = document.getElementById("text-area-field");
     
-    const allNotesContainer = document.getElementById('notebook-entries');
+    const tBodyContainer = document.getElementById('table-body');
 
-    allNotesContainer.addEventListener('click', function(event){
+    tBodyContainer.addEventListener('click', function(event){
         if(event.target.classList.contains("fa-edit")){
             event.stopPropagation();
-            const noteContainer = event.target.closest('.notebook-single-container');
-            selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
+            const noteContainer = event.target.closest('.notebook-single-tr');
+            selectedNoteId = noteContainer.nextElementSibling.getAttribute('data-id');
             const title = noteContainer.querySelector('.title-container').textContent;
-            const description = noteContainer.querySelector('.entry').textContent;
+            const description = noteContainer.querySelector('.description-container').textContent;
             
             titleField.value = title;
             textAreaField.value = description;
@@ -146,6 +144,27 @@ function fetchNote(){
 
 };
 
+async function createNote(){
+    dataMode = false;
+    let titleField = document.getElementById("title-field").value;
+    let textAreaField = document.getElementById("text-area-field").value;
+    
+    try{
+        const response = await fetch(`${APIUrl}/submit` , {
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({title: titleField, description: textAreaField})
+    })}catch(error){
+            alert("There was an error. Please try again.")
+            console.error(error);
+    }
+    const result = await response.json();
+    textAreaField.value = "";
+    titleField.value = "";
+    location.reload();
+}
 
 
 
