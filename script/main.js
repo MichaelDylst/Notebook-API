@@ -1,7 +1,6 @@
 const APIUrl = 'http://localhost:3000'
 let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
-let readButton = document.getElementById('read-button');
 let dataMode = false;
 let selectedNoteId = null;
 
@@ -146,6 +145,27 @@ function fetchNote(){
 
 };
 
+async function createNote(){
+    dataMode = false;
+    let titleField = document.getElementById("title-field").value;
+    let textAreaField = document.getElementById("text-area-field").value;
+    
+    try{
+        const response = await fetch(`${APIUrl}/submit` , {
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({title: titleField, description: textAreaField})
+    })}catch(error){
+            alert("There was an error. Please try again.")
+            console.error(error);
+    }
+    const result = await response.json();
+    textAreaField.value = "";
+    titleField.value = "";
+    location.reload();
+}
 
 
 
