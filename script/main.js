@@ -149,16 +149,15 @@ async function createNote(){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
     
-    const response = await fetch(`${APIUrl}/submit` , {
+    try{
+        const response = await fetch(`${APIUrl}/submit` , {
         method:'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({title: titleField, description: textAreaField})
-    });
-
-    if(!response.ok){
-        throw new Error('There is a problem.');
+    })}catch(error){
+            alert("There was an error. Please try again.", error)
     }
     const result = await response.json();
     textAreaField.value = "";
