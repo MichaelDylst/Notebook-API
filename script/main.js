@@ -157,7 +157,8 @@ async function createNote(){
         },
         body: JSON.stringify({title: titleField, description: textAreaField})
     })}catch(error){
-            alert("There was an error. Please try again.", error)
+            alert("There was an error. Please try again.")
+            console.error(error);
     }
     const result = await response.json();
     textAreaField.value = "";
