@@ -8,11 +8,28 @@
 </head>
 
 <body>
+    <div class="account-tab">
+    </div>
+
     <div id="notebook" class="notebook-entries">
-        <div class="notebook-header"> 
+        <!--<div class="notebook-header"> 
             <h2 class="title">Notebook</h2>
+        </div>-->
+        <div class="login-card">
+            <div class="input-container">
+                <label for="label-email">Email</label>
+    
+                <input type="email" id="label-email" class="email-input" name="label-email">
+            </div>
+            <div class="input-container">
+                <label for="password-field">Password</label>
+                <input type="password" class="password-input" id="password-field">
+                <i class="fa-solid fa-eye"></i>
+            </div>
+            <button class="login-button">Log in</button>
+            <button class="login-button">Sign up</button>
         </div>
-        <table>
+        <table cellspacing="0" cellpadding="0">
             <thead>
                 <tr>                
                     <th scope="col">Title</th>
@@ -23,9 +40,9 @@
             <tbody id="table-body">
                 
             </tbody>
-
         </table>
     </div>
+    
 
     <form id="form-notebook-identifier" class="form-notebook">
         <div class="notebook-container">
@@ -34,6 +51,7 @@
             <input type="submit" id="save-button" class="button" value="Save">  
         </div>
     </form>
+
 <script src="https://kit.fontawesome.com/c23b68ee2a.js" crossorigin="anonymous"></script>
 <script src="script/main.js"></script>
 </body>
