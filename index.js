@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const saltRounds = 5;
 const app = express();
 const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
@@ -70,3 +72,33 @@ app.post('/submit', async (req, res) => {
 
     res.json({message: 'Data succesfully saved!', note: result.rows[0]})
 })
+
+app.post('/createUser', async(req, res) => {
+  const {username, password} = req.body;
+  try{
+    const queryCheck = 'SELECT * FROM account WHERE user_name = $1';
+    const valueCheck = [username];
+    const resultCheck = await client.query(queryCheck, valueCheck);
+    if(resultCheck.rows.length > 0 ){
+      return res.status(400).json({error: 'Username already exists.'});
+    }else{
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const query = 'INSERT INTO account (user_name, password) VALUES ($1,$2) RETURNING account_id';
+      const values = [username, hashedPassword];
+      const result = await client.query(query, values);
+      res.json({message: 'Data succesfully saved!', note: result.rows[0]})
+    } }catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Registration Failed'});
+  }
+});
+
+app.get('/fetchUsers', async (req,res) => {
+  try{
+    const result = await client.query('SELECT * FROM account ORDER BY account_id ASC');
+    res.json(result.rows);
+  } catch(error){
+    console.log(error)
+  }
+});
+

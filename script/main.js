@@ -3,6 +3,7 @@ let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
+let signupButton = document.getElementById('signup-button');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -79,28 +80,6 @@ async function deleteNote(){
             });
 }
 
-async function editNote(){
-    dataMode = True;
-    let titleField = document.getElementById("title-field");
-    let textAreaField = document.getElementById("text-area-field");
-    
-    const allNotesContainer = document.getElementById('notebook-entries');
-
-    allNotesContainer.addEventListener('click', function(event){
-        if(event.target.classList.contains("fa-edit")){
-            event.stopPropagation();
-            const noteContainer = event.target.closest('.notebook-single-container');
-            selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
-            const title = noteContainer.querySelector('.title-container').textContent;
-            const description = noteContainer.querySelector('.entry').textContent;
-            
-            titleField.value = title;
-            textAreaField.value = description;
-        }
-    }, {once:true});
-
-};
-
 
 async function updateNote(){
     let titleField = document.getElementById("title-field").value;
@@ -166,8 +145,31 @@ async function createNote(){
     location.reload();
 }
 
-
+async function createUser(){
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+    try{
+        const response = await fetch(`${APIUrl}/createUser`, {
+            method:'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({username: username, password: password})
+        })
+        const result = await response.json();
+        if(response.ok){
+            alert("User successfully created.")
+        }
+    }catch(error){
+        alert("There was an error. Please try again.");
+        console.error(error)
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
+})
+
+signupButton.addEventListener('click', async () => {
+    createUser();
 })
