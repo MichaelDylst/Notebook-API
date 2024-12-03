@@ -3,7 +3,6 @@ let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
-let signupButton = document.getElementById('signup-button');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -145,31 +144,6 @@ async function createNote(){
     location.reload();
 }
 
-async function createUser(){
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-    try{
-        const response = await fetch(`${APIUrl}/createUser`, {
-            method:'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username: username, password: password})
-        })
-        const result = await response.json();
-        if(response.ok){
-            alert("User successfully created.")
-        }
-    }catch(error){
-        alert("There was an error. Please try again.");
-        console.error(error)
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
-})
-
-signupButton.addEventListener('click', async () => {
-    createUser();
 })

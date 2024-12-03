@@ -4,9 +4,11 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const saltRounds = 5;
 const app = express();
+const jwt = require('jsonwebtoken');
 const { Client } = require('pg');
 const dbPass = process.env.DB_PASS;
 const PORT = process.env.PORT;
+const JWT_KEY = process.env.JWT_SECRET;
 
 
 const client = new Client({
@@ -101,4 +103,32 @@ app.get('/fetchUsers', async (req,res) => {
     console.log(error)
   }
 });
+
+app.post('/login', async(req,res) => {
+  const{username, password} = req.body;
+  try{
+    const queryCheck = 'SELECT * FROM account WHERE user_name = $1';
+    const valueCheck = [username];
+    const checkResult = await client.query(queryCheck, valueCheck)
+    if (checkResult.rows.length === 0){
+      return res.status(400).json({error: 'Invalid username or password.'})
+    }else{
+      const account = checkResult.rows[0];
+      console.log(account)
+      const passwordMatch = await bcrypt.compare(password, account.password)
+      if(passwordMatch){
+        const payload = {
+          "user_id" : account.account_id,
+          "username": account.user_name
+      };
+      const syncToken = jwt.sign(payload, JWT_KEY);
+        return res.status(200).json({success: "You have now been logged in.", syncToken })
+      }else{
+        return res.status(400).json({error: 'Invalid username or password.'})
+      }
+    }
+  }catch(error){
+    res.status(500).json({error: 'Login Failed'})
+  }
+})
 
