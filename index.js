@@ -67,9 +67,9 @@ app.listen(PORT, () => {
 })
 
 app.post('/submit', async (req, res) => {
-    const {title, description} = req.body;
-    const query = 'INSERT INTO notebook(title, description) VALUES($1, $2) RETURNING *';
-    const values = [title, description];
+    const {title, description, account_id} = req.body;
+    const query = 'INSERT INTO notebook(title, description, account_id) VALUES($1, $2, $3) RETURNING *';
+    const values = [title, description, account_id];
     const result = await client.query(query, values)
 
     res.json({message: 'Data succesfully saved!', note: result.rows[0]})
@@ -118,7 +118,7 @@ app.post('/login', async(req,res) => {
       const passwordMatch = await bcrypt.compare(password, account.password)
       if(passwordMatch){
         const payload = {
-          "user_id" : account.account_id,
+          "account_id" : account.account_id,
           "username": account.user_name
       };
       const syncToken = jwt.sign(payload, JWT_KEY);

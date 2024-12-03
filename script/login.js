@@ -37,10 +37,9 @@ async function loginUser(){
             body: JSON.stringify({username: username, password: password})
         })
         const result = await response.json();
-        console.log(result)
         if(result){
             let validationToken = result.syncToken;
-            console.log(validationToken)
+            sessionStorage.setItem('validationToken', validationToken);
             changePage();
         }else{
             alert(result.error)
