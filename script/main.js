@@ -162,7 +162,6 @@ function decodeJWT(){
 }
 
 function changePage(){
-    console.log(window.location.href)
     if(window.location.href === "login.html"){
         window.location.href = "index.html";
     }else{

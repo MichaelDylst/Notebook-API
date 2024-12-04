@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
 const bcrypt = require('bcrypt');
-const saltRounds = 5;
 const app = express();
 const jwt = require('jsonwebtoken');
 const { Client } = require('pg');
@@ -84,7 +83,8 @@ app.post('/createUser', async(req, res) => {
     if(resultCheck.rows.length > 0 ){
       return res.status(400).json({error: 'Username already exists.'});
     }else{
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const generatedSalt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, generatedSalt);
       const query = 'INSERT INTO account (user_name, password) VALUES ($1,$2) RETURNING account_id';
       const values = [username, hashedPassword];
       const result = await client.query(query, values);
@@ -114,7 +114,6 @@ app.post('/login', async(req,res) => {
       return res.status(400).json({error: 'Invalid username or password.'})
     }else{
       const account = checkResult.rows[0];
-      console.log(account)
       const passwordMatch = await bcrypt.compare(password, account.password)
       if(passwordMatch){
         const payload = {
