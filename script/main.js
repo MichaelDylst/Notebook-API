@@ -172,9 +172,15 @@ function changePage(){
 
 
 document.addEventListener('DOMContentLoaded', () =>{
+    const token = sessionStorage.getItem('validationToken');
+    if(!token){
+        alert("You're not logged in, please log in.")
+        window.location.href="login.html";
+    }
     showNotebook();
 })
 
 logoutButton.addEventListener('click', () => {
+    sessionStorage.removeItem('validationToken');
     changePage();
 })
