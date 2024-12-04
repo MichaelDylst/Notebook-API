@@ -78,7 +78,7 @@ body{
     padding:8px;
     font-size: 0.8rem;
     font-weight:600;
-    width:30%;
+    margin-top:4px;
 }
 .button:active{
     transform:scale(0.95);
@@ -197,7 +197,6 @@ i{
     width:15%;
     height:100%;
     border-right: 1px solid black;
-    display:none;
 }
 
 .account-image{

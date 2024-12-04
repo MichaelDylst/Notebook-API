@@ -3,6 +3,7 @@ let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
+let logoutButton = document.getElementById('logout-button');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -160,6 +161,21 @@ function decodeJWT(){
     return JSON.parse(window.atob(base64));
 }
 
+function changePage(){
+    console.log(window.location.href)
+    if(window.location.href === "login.html"){
+        window.location.href = "index.html";
+    }else{
+        window.location.href = "login.html"
+    }
+
+}
+
+
 document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
+})
+
+logoutButton.addEventListener('click', () => {
+    changePage();
 })
