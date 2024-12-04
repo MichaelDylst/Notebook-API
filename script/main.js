@@ -3,6 +3,7 @@ let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
+let logoutButton = document.getElementById('logout-button');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -27,25 +28,29 @@ async function showNotebook(){
     titleField.value = "";
     textAreaField.value = "";
     const notebook = await fetchNotebooks();
+    const user = decodeJWT();
+    const account_id = user.account_id;
 
     notebook.forEach(note => {
-        const limitedDescription = note.description.length > 100
-        ? note.description.slice(0,30) + "..."
-        : note.description;
-
-        tBody.innerHTML += 
-        `
-        <tr class="notebook-single-tr">
-            <div class="notebook-single-element" data-id="${note.id}">
-                <td class="title-container">${note.title}</td>
-                <td class="description-container">${note.description}</td>
-                <td class="actions">
-                    <i onClick="fetchNote(this)" class="fas fa-edit"></i>
-                    <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
-                </td>
-            </div>
-        </tr>
-        `
+        if(note.account_id === account_id){
+            const limitedDescription = note.description.length > 100
+            ? note.description.slice(0,30) + "..."
+            : note.description;
+    
+            tBody.innerHTML += 
+            `
+            <tr class="notebook-single-tr">
+                <div class="notebook-single-element" data-id="${note.id}">
+                    <td class="title-container">${note.title}</td>
+                    <td class="description-container">${note.description}</td>
+                    <td class="actions">
+                        <i onClick="fetchNote(this)" class="fas fa-edit"></i>
+                        <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
+                    </td>
+                </div>
+            </tr>
+            `
+        }
 
     })};
 
@@ -78,28 +83,6 @@ async function deleteNote(){
 
             });
 }
-
-async function editNote(){
-    dataMode = True;
-    let titleField = document.getElementById("title-field");
-    let textAreaField = document.getElementById("text-area-field");
-    
-    const allNotesContainer = document.getElementById('notebook-entries');
-
-    allNotesContainer.addEventListener('click', function(event){
-        if(event.target.classList.contains("fa-edit")){
-            event.stopPropagation();
-            const noteContainer = event.target.closest('.notebook-single-container');
-            selectedNoteId = noteContainer.firstElementChild.getAttribute('data-id');
-            const title = noteContainer.querySelector('.title-container').textContent;
-            const description = noteContainer.querySelector('.entry').textContent;
-            
-            titleField.value = title;
-            textAreaField.value = description;
-        }
-    }, {once:true});
-
-};
 
 
 async function updateNote(){
@@ -148,6 +131,8 @@ async function createNote(){
     dataMode = false;
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
+    const user = decodeJWT();
+    const account_id = user.account_id;
     
     try{
         const response = await fetch(`${APIUrl}/submit` , {
@@ -155,19 +140,41 @@ async function createNote(){
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({title: titleField, description: textAreaField})
+        body: JSON.stringify({title: titleField, description: textAreaField, account_id:account_id})
     })}catch(error){
             alert("There was an error. Please try again.")
             console.error(error);
     }
-    const result = await response.json();
     textAreaField.value = "";
     titleField.value = "";
     location.reload();
 }
 
+function decodeJWT(){
+    const token = sessionStorage.getItem('validationToken');
+    if(!token){
+        return;
+    }
+
+    const base64URL = token.split(".")[1];
+    const base64 = base64URL.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+}
+
+function changePage(){
+    if(window.location.href === "login.html"){
+        window.location.href = "index.html";
+    }else{
+        window.location.href = "login.html"
+    }
+
+}
 
 
 document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
+})
+
+logoutButton.addEventListener('click', () => {
+    changePage();
 })
