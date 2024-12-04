@@ -75,7 +75,7 @@ body{
     border:1px solid rgba(58, 129, 242, 0.5);
     box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
     border-radius: 16px;
-    padding:8px;
+    padding:4px;
     font-size: 0.8rem;
     font-weight:600;
     margin-top:4px;
@@ -190,13 +190,12 @@ i{
 }
 
 .account-tab{
-
+    margin:10px;
     display: flex;
     flex-direction: column; 
     align-items: center;
     width:15%;
     height:100%;
-    border-right: 1px solid black;
 }
 
 .account-image{
@@ -205,5 +204,22 @@ i{
     border-radius: 100px;
     border:1px solid black ;
     margin-top: 24px;
+}
+
+.clickMe{
+    border: 1px solid  rgba(58, 129, 242, 0.5);
+    text-align: center;
+    background-color:rgb(237, 242, 250);
+    color:rgb(58, 129, 242);
+    box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
+    border-radius: 16px;
+    padding:4px;
+    font-size: 0.8rem;
+    font-weight:600;
+    margin-top:4px;
+    text-decoration: none;
+}
+.clickMe:active{
+    transform:scale(0.95);
 }
 
