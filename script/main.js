@@ -1,4 +1,4 @@
-const APIUrl = 'http://localhost:3000'
+const APIUrl = 'http://localhost:3000';
 let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
@@ -43,12 +43,20 @@ async function showNotebook(){
             tBody.innerHTML += 
             `
             <tr class="notebook-single-tr">
-                <div class="notebook-single-element" data-id="${note.id}">
+                <div class="notebook-single-element" data-id="${note.id}" id="notebook-single-container">
                     <td class="title-container">${note.title}</td>
                     <td class="description-container">${note.description}</td>
                     <td class="actions">
                         <i onClick="fetchNote(this)" class="fas fa-edit"></i>
                         <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
+                       
+                        <div id="dropdown">
+                        <i onClick="showDropdown(this)" class="fa-solid fa-ellipsis"></i>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="#">Add to folder</a>
+                            <a href="#">Like this note</a>
+                        </div>
+                        </div>
                     </td>
                 </div>
             </tr>
@@ -176,7 +184,6 @@ function changePage(){
 
 }
 
-
 document.addEventListener('DOMContentLoaded', () =>{
     const token = sessionStorage.getItem('validationToken');
     if(!token){
@@ -190,3 +197,24 @@ logoutButton.addEventListener('click', () => {
     sessionStorage.removeItem('validationToken');
     changePage();
 })
+
+function showDropdown(){
+    const tBodyContainer = document.getElementById('table-body');
+
+    tBodyContainer.addEventListener('click', function(event){
+        if(event.target.classList.contains("fa-ellipsis")){
+            event.stopPropagation();
+            const noteRow = event.target.closest('.notebook-single-tr');
+            const dropdownContent = noteRow.querySelector('.dropdown-content');
+            if(dropdownContent){
+                if(dropdownContent.style.display === ""){
+                    dropdownContent.style.display ="block";
+                }else{
+                    dropdownContent.style.display ="";
+                }
+            }
+
+        }
+    }, {once:true});
+
+};

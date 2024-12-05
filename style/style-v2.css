@@ -91,6 +91,7 @@ body{
     font-weight:600;
     text-decoration: none;
     margin-right: 0.8rem;
+    font-weight:400;
 }
 .button:active{
     transform:scale(0.95);
@@ -187,6 +188,12 @@ i{
 }
 .actions{
     color:rgb(68, 133, 244);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.actions i{
+    margin:0.2em;
 }
 
 .notebook-single-tr:hover{
@@ -235,4 +242,34 @@ i{
 
 #no-notebook-entries p {
     font-size: 0.8rem;
+}
+
+.dropdown {
+    position:relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display:none;
+    position: absolute;
+    min-width: 40px;
+    box-shadow: 0px 8px 16px 0px rgb(157, 189, 246);
+    z-index:2;
+    background-color:rgb(237, 242, 250);
+    border-radius: 4px;
+}
+
+.dropdown-content a {
+    color: rgb(121, 166, 243);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+.dropdown-content a:hover {
+    background-color: hsl(225, 100%, 88%);
+}
+
+.show {
+    display:block;
 }
