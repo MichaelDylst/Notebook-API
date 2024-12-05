@@ -8,20 +8,23 @@
 </head>
 <body>
     <h3>MY NOTEBOOK</h3>
-    <div class="login-card">
+    <form id="login-form"> 
+        <div class="login-card">
         <div class="input-container">
             <label for="username">Username</label>
-            <input type="text" id="username" class="username-field" name="username">
+            <input type="text" id="username" class="username-field" name="username" required>
         </div>
         <div class="input-container">
             <label for="password">Password</label>
-            <input type="password" class="password-input" id="password">
+            <input type="password" class="password-input" id="password" required>
             <i class="fa-solid fa-eye"></i>
         </div>
-        <button id="login-button" class="login-button">Log in</button>
-        <button id="signup-button" class="login-button">Sign up</button>
+        <input type="submit" id="login-button" class="login-button" value="Log-in" name="button-for-login">
+        <input type="submit" id="signup-button" class="login-button" value="Sign-up" name="button-for-signup">
     </div>
-    
+</form>
+
+
     <script src="script/login.js"></script>
 </body>
 </html>
