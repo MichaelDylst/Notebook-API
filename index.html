@@ -10,12 +10,16 @@
 <body>
     <div class="complete-page">
     <div class="account-tab">
-        <a class="clickMe" href="manage-account.html">Manage Account</a>
+        <a class="button" href="manage-account.html">Manage Account</a>
         <button id="logout-button" class="button">Logout</button>
     </div>
-    <div class="table-form"> 
+    <div class="table-form">
         <div id="notebook" class="notebook-entries">
-        <table cellspacing="0" cellpadding="0">
+            <div id="no-notebook-entries" class="empty-container">
+                <img class="note-image" src="images/create-note.svg">
+                <p>Add a note to get started.</p>
+            </div>
+        <table cellspacing="0" cellpadding="0" id="table-notebook">
             <thead>
                 <tr>                
                     <th scope="col">Title</th>
@@ -24,7 +28,6 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                
             </tbody>
         </table>
     </div>

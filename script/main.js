@@ -24,15 +24,18 @@ async function fetchNotebooks(){
 async function showNotebook(){
     let titleField = document.getElementById("title-field");
     let textAreaField = document.getElementById("text-area-field");
-
+    let tableNotes = document.getElementById('table-notebook');
+    let noEntries = document.getElementById('no-notebook-entries')
     titleField.value = "";
     textAreaField.value = "";
     const notebook = await fetchNotebooks();
     const user = decodeJWT();
     const account_id = user.account_id;
-
+    tableNotes.style.display = "none"
     notebook.forEach(note => {
         if(note.account_id === account_id){
+            noEntries.style.display = "none";
+            tableNotes.style.display = "";
             const limitedDescription = note.description.length > 100
             ? note.description.slice(0,30) + "..."
             : note.description;
@@ -50,6 +53,8 @@ async function showNotebook(){
                 </div>
             </tr>
             `
+        }else{
+            tableNotes.style.display = "none";
         }
 
     })};
@@ -74,7 +79,8 @@ async function deleteNote(){
                 })
                     const result = await response.json();
                     noteContainer.remove()
-                    alert("Note deleted sucessfully")
+                    alert("Note deleted sucessfully");
+                    location.reload()
                 }
                 catch(error){
                     console.error(error)
