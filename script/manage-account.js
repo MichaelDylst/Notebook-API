@@ -46,6 +46,29 @@ function decodeJWT(){
     return JSON.parse(window.atob(base64));
 }
 
+changePasswordButton.addEventListener('click', () => {
+    changePassword();
+})
+
+newPasswordShow.addEventListener('click', function(event){
+    if (showPassword === false){
+        showPassword = true;
+        newPasswordField.type = "text"
+    }else{
+        showPassword = false;
+        newPasswordField.type = "password";
+    }
+})
+
+oldPasswordShow.addEventListener('click', function(event){
+    if (showPassword === false){
+        showPassword = true;
+        oldPasswordField.type = "text"
+    }else{
+        showPassword = false;
+        oldPasswordField.type = "password";
+    }
+})
 
 document.addEventListener('DOMContentLoaded', () =>{
     const user = decodeJWT();
