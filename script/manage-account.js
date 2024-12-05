@@ -29,7 +29,6 @@ async function changePassword(){
             body: JSON.stringify({user_id: user_id, oldPass: oldPasswordField, newPass: newPasswordField})
         })
         const result = await response.json();
-        console.log(result);
     }catch(error){
         console.error(error);
     }
