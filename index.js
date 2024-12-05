@@ -115,19 +115,40 @@ app.post('/login', async(req,res) => {
     }else{
       const account = checkResult.rows[0];
       const passwordMatch = await bcrypt.compare(password, account.password)
-      if(passwordMatch){
-        const payload = {
-          "account_id" : account.account_id,
-          "username": account.user_name
+      if(!passwordMatch){
+        return res.status(400).json({ error: 'Invalid username or password.' })
       };
-      const syncToken = jwt.sign(payload, JWT_KEY);
-        return res.status(200).json({success: "You have now been logged in.", syncToken })
-      }else{
-        return res.status(400).json({error: 'Invalid username or password.'})
+      const payload = {
+        "account_id" : account.account_id,
+        "username": account.user_name
       }
+      const syncToken = jwt.sign(payload, JWT_KEY);
+      return res.status(200).json({success: "You have now been logged in.", syncToken })
     }
   }catch(error){
     res.status(500).json({error: 'Login Failed'})
   }
 })
+
+app.patch('/changePassword', async (req,res) => {
+    const {user_id, oldPass, newPass} = req.body;
+    try{
+      const queryCheck = 'SELECT password FROM account WHERE account_id = $1'
+      const valueCheck = [user_id];
+      const checkResult = await client.query(queryCheck, valueCheck);
+      const account = checkResult.rows[0];
+      const passwordMatch = await bcrypt.compare(oldPass, account.password);
+      if(passwordMatch){
+        const generatedSalt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(newPass, generatedSalt);
+        const valuesChange = [user_id, hashedPassword]
+        const queryChange = 'UPDATE account SET password = $2 WHERE account_id = $1 RETURNING account_id, user_name';
+        const result = await client.query(queryChange, valuesChange)
+        res.json({message: 'Data succesfully saved!', note: result.rows[0]})
+      }
+    }catch(error){
+      console.error(error);
+      res.status(500).json({ error: 'Password Change Failed'});
+    }
+});
 

@@ -75,7 +75,7 @@ body{
     box-shadow: inset 0 2px 0 hsla(214, 93%, 67%, 0.4);
 }
 
-.clickMe{
+.change-password-button, .change-page-button{
     border: 1px solid  rgba(58, 129, 242, 0.5);
     text-align: center;
     background-color:rgb(237, 242, 250);
@@ -87,8 +87,18 @@ body{
     font-weight:600;
     margin-top:4px;
     text-decoration: none;
+    width:70%;
 }
-.clickMe:active{
+.change-password-button:active, .change-page-button:active{
     transform:scale(0.95);
 }
 
+.change-password-button:hover, .change-page-button:hover{
+    cursor: pointer;
+}
+
+#change-pass-form{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}

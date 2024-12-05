@@ -12,10 +12,12 @@
         <p id="username-p">Hi </p>
         <div id="change-password" class="password-container">
             <p>Change your password</p>
+
+            <form id="change-pass-form">
             <div class="password-single-container">           
                 <label for="old-password">
                     <span>Old Password</span>
-                    <input id="old-password" type="password" class="password-input">
+                    <input id="old-password" type="password" class="password-input" required>
                     <i onClick="showPassword(this)" id="old-password-show">Show password</i>
                 </label>
             </div>
@@ -23,11 +25,14 @@
             <div class="password-single-container"> 
                 <label for="new-password">
                     <span onClick="">New Password</span>
-                    <input id="new-password" type="password" class="password-input">
+                    <input id="new-password" type="password" class="password-input" required>
                     <i onClick="showPassword(this)" id="new-password-show">Show password</i>
                 </label>
             </div>
-            <a class="clickMe" href="index.html">Back to notebook</a>
+            <input type="submit" id="change-pass-button" class="change-password-button" value="Change password"></button>
+        </form>
+
+            <a class="change-page-button" href="index.html">Back to notebook</a>
         </div>
     </div>
     <script src="script/manage-account.js"></script>

@@ -53,12 +53,12 @@ async function loginUser(){
             body: JSON.stringify({username: username, password: password})
         })
         const result = await response.json();
-        if(result){
+        if(result.syncToken){
             let validationToken = result.syncToken;
             sessionStorage.setItem('validationToken', validationToken);
             window.location.href = "index.html"
         }else{
-            alert(result.error)
+            alert("Unexpected error: Wrong Password!")
         }
     }catch(error){
         alert("There was an error. Please try again.");

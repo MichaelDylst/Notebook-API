@@ -93,6 +93,9 @@ body{
 .button:active{
     transform:scale(0.95);
 }
+.button:hover{
+    cursor:pointer;
+}
 
 .notebook-entries{
     display:flex;

@@ -1,9 +1,39 @@
 let welcomeMessage = document.getElementById('username-p');
 let showPassword = false;
+let newPasswordShow = document.getElementById('new-password-show');
+let oldPasswordShow = document.getElementById('old-password-show');
 let oldPasswordField = document.getElementById('old-password');
 let newPasswordField = document.getElementById('new-password');
-let newPasswordShow = document.getElementById('new-password-show');
-let oldpasswordShow = document.getElementById('old-password-show');
+let form = document.getElementById('change-pass-form');
+const changePasswordButton = document.getElementById('change-pass-button');
+const APIUrl = 'http://localhost:3000';
+
+
+form.onsubmit = async function(event){
+    event.preventDefault();
+    await changePassword();
+}
+
+async function changePassword(){
+    let oldPasswordField = document.getElementById('old-password').value;
+    let newPasswordField = document.getElementById('new-password').value;
+    const user = decodeJWT();
+    const user_id = user.account_id;
+
+    try{
+        const response = await fetch(`${APIUrl}/changePassword`, {
+            method: 'PATCH', 
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({user_id: user_id, oldPass: oldPasswordField, newPass: newPasswordField})
+        })
+        const result = await response.json();
+        console.log(result);
+    }catch(error){
+        console.error(error);
+    }
+}
 
 function decodeJWT(){
     const token = sessionStorage.getItem('validationToken');
@@ -11,14 +41,13 @@ function decodeJWT(){
         alert("You're not logged in, please log in.")
         window.location.href="login.html";
     }
-
     const base64URL = token.split(".")[1];
     const base64 = base64URL.replace("-", "+").replace("_", "/");
     return JSON.parse(window.atob(base64));
 }
 
+
 document.addEventListener('DOMContentLoaded', () =>{
     const user = decodeJWT();
-    console.log(user);
     welcomeMessage.innerHTML += user.username + "!";
 })
