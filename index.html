@@ -10,6 +10,7 @@
 <body>
     <div class="complete-page">
     <div class="account-tab">
+        <button id="create-note-button" class="button">Create Note</button>
         <a class="button" href="manage-account.html">Manage Account</a>
         <button id="logout-button" class="button">Logout</button>
     </div>
@@ -21,10 +22,10 @@
             </div>
         <table cellspacing="0" cellpadding="0" id="table-notebook">
             <thead>
-                <tr>                
-                    <th scope="col">Title</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
+                <tr class="heading-table">                
+                    <th class="title-table" scope="col">Title</th>
+                    <th class="description-table" scope="col">Description</th>
+                    <th class="actions-table" scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -37,7 +38,11 @@
         <div class="notebook-container">
             <input type="text" id="title-field" class="title-field" placeholder="Title" required>
             <textarea rows="" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
-            <input type="submit" id="save-button" class="button" value="Save">  
+            <div id="button-container">            
+                <input type="submit" id="save-button" class="button" value="Save">
+                <button id="cancel-button" class="button">Cancel</button>
+            </div>
+
         </div>
     </form>
 </div>

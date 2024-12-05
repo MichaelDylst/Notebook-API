@@ -31,11 +31,18 @@ body{
     justify-content: center;
 }
 
+#form-notebook-identifier{
+    display:none;
+    position:fixed;
+    z-index:1;
+    background-color: rgba(133, 184, 247, 0.4);
+}
+
 .form-notebook{
     display: flex;
     justify-content: center;
     height:600px;
-    width:60%;
+    width:100%;
 }
 
 .notebook-container{
@@ -100,35 +107,26 @@ body{
     cursor:pointer;
 }
 
+#save-button{
+    background-color: hsl(110, 63%, 87%);
+    width:100%;
+    margin-bottom:.5rem;
+}
+
+#cancel-button{
+    background-color: hsl(0, 85%, 79%);
+    width:100%;
+}
+
 .notebook-entries{
     display:flex;
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
-    border-right: 1px solid rgba(126, 167, 250, 0.8);
     border-radius: 4px;
     height:600px;
     overflow:auto;
-    width:40%;
-}
-
-.notebook-header{
-    display:flex;
-    position: sticky;
-    top:0;
-    z-index: 1;
-    color:rgb(148, 187, 249);
-    border-bottom:1px solid rgba(216, 212, 213, 0.8);
-    margin-bottom: 16px; 
-    font-size: 0.7rem;
-    background-color:rgb(201, 216, 241);
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius:8px;
-    padding: 16px;
-}
-
-.notebook-header h2{
-    margin-bottom:0;
+    width:80%;
 }
 
 .options{
@@ -153,19 +151,31 @@ table {
     margin: 8px;
     overflow: auto;
     border-spacing:0 6px;
-    width:90%;
+    width:60%;
 }
 
 thead{
     font-size:0.8rem;
     font-weight: 500;
     color:rgb(148, 187, 249);
+    text-align: left;
+}
+
+.title-table{
+    width:20%;
+}
+
+.description-table{
+    width:60%;
+}
+.actions-table{
+    width:20%;
 }
 
 
 td{
     padding: 16px 8px;
-    text-align: center;
+    text-align: left;
     font-size:0.7rem;
     font-weight: 400;
     color:rgb(96, 144, 222);

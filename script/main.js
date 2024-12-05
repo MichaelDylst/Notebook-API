@@ -4,6 +4,10 @@ let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
 let logoutButton = document.getElementById('logout-button');
+let modal = document.getElementById('form-notebook-identifier');
+let openForm = document.getElementById('create-note-button');
+let closeForm = document.getElementById('cancel-button');
+
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -47,11 +51,11 @@ async function showNotebook(){
                     <td class="title-container">${note.title}</td>
                     <td class="description-container">${note.description}</td>
                     <td class="actions">
-                        <i onClick="fetchNote(this)" class="fas fa-edit"></i>
-                        <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
+                        <i title="Edit" onClick="fetchNote(this)" class="fas fa-edit"></i>
+                        <i title="Delete" onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                        
                         <div id="dropdown">
-                        <i onClick="showDropdown(this)" class="fa-solid fa-ellipsis"></i>
+                        <i title="Dropdown" onClick="showDropdown(this)" class="fa-solid fa-ellipsis"></i>
                         <div id="myDropdown" class="dropdown-content">
                             <a href="#">Add to folder</a>
                             <a href="#">Like this note</a>
@@ -136,9 +140,10 @@ function fetchNote(){
             
             titleField.value = title;
             textAreaField.value = description;
+            openModal();
         }
     }, {once:true});
-
+    
 };
 
 async function createNote(){
@@ -218,3 +223,19 @@ function showDropdown(){
     }, {once:true});
 
 };
+
+function openModal () {
+    modal.style.display = 'flex';
+}
+
+function closeModal(){
+    modal.style.display = '';
+}
+
+openForm.addEventListener('click', () => {
+    openModal();
+});
+
+closeForm.addEventListener('click', () => {
+    closeModal();
+})
