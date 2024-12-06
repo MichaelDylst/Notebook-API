@@ -152,3 +152,15 @@ app.patch('/changePassword', async (req,res) => {
     }
 });
 
+app.post('/addFolder', async(req,res) => {
+  const{account_id, folder_name} = req.body;
+  try{ 
+  const query = 'INSERT INTO folders(folder_name, account_id) VALUES ($2, $1) RETURNING folder_name, account_id'
+  const values = [account_id, folder_name]
+  const result = await client.query(query, values);
+  res.json({message: 'Folder successfully added!', note: result.rows[0]})
+}catch(error){
+  console.error(error);
+  res.status(500).json({ error: 'Folder Creation Failed'});
+}
+})

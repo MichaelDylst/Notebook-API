@@ -5,14 +5,18 @@ let dataMode = false;
 let selectedNoteId = null;
 let logoutButton = document.getElementById('logout-button');
 let modal = document.getElementById('form-notebook-identifier');
-let openForm = document.getElementById('create-note-button');
+let createNoteButton = document.getElementById('create-note-button');
 let closeForm = document.getElementById('cancel-button');
-
+let createFolderButton = document.getElementById('create-folder');
+let dropdownContent = document.getElementsByClassName('dropdown-content-menu')[0];
+let addFolderButton = document.getElementById('add-folder-button');
+let addFolderForm = document.getElementById('add-folder-form');
 
 form.onsubmit = async function(event){
     event.preventDefault();
 
     const value = event.submitter.value;
+    console.log(value)
 
     if(value ==="Cancel"){
         closeModal();
@@ -23,9 +27,12 @@ form.onsubmit = async function(event){
             await createNote()
         }
     }
-
-
 };
+
+addFolderForm.onsubmit = async function(event){
+    event.preventDefault();
+    await createFolder();
+}
 
 async function fetchNotebooks(){
     const response = await fetch(`${APIUrl}/notebook`);
@@ -63,10 +70,10 @@ async function showNotebook(){
                         <i title="Delete" onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                        
                         <div id="dropdown">
-                        <i title="Dropdown" onClick="showDropdown(this)" class="fa-solid fa-ellipsis"></i>
+                        <i title="Dropdown" onClick="showDropdownTable(this)" class="fa-solid fa-ellipsis"></i>
                         <div id="myDropdown" class="dropdown-content">
-                            <a href="#">Add to folder</a>
-                            <a href="#">Like this note</a>
+                            <a class="add-to-folder "href="#">Add to folder</a>
+                            <a class="like-this-note" href="#">Like this note</a>
                         </div>
                         </div>
                     </td>
@@ -197,6 +204,28 @@ function changePage(){
 
 }
 
+async function createFolder(){
+    let folderName = document.getElementById('folder-name').value;
+    let user = decodeJWT();
+    let user_id = user.account_id;
+    try{
+        const response = await fetch(`${APIUrl}/addFolder`, {
+            method:'POST', 
+            headers:{
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify({account_id:user_id, folder_name: folderName} )
+        })
+        const result = await response.json();
+        if(result){
+            alert(result.message)
+        }
+    }catch(error){
+        console.error(error)
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () =>{
     const token = sessionStorage.getItem('validationToken');
     if(!token){
@@ -211,7 +240,7 @@ logoutButton.addEventListener('click', () => {
     changePage();
 })
 
-function showDropdown(){
+function showDropdownTable(){
     const tBodyContainer = document.getElementById('table-body');
 
     tBodyContainer.addEventListener('click', function(event){
@@ -237,9 +266,18 @@ function openModal () {
 }
 
 function closeModal(){
-    modal.style.display = '';
+    modal.style.display = 'none';
 }
 
-openForm.addEventListener('click', () => {
+createNoteButton.addEventListener('click', (event) => {
     openModal();
 });
+
+createFolderButton.addEventListener('click', () => {
+    if(dropdownContent.style.display === ""){
+        dropdownContent.style.display ="block";
+    }else{
+        dropdownContent.style.display ="";
+    }
+})
+
