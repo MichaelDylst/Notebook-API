@@ -12,11 +12,19 @@ let closeForm = document.getElementById('cancel-button');
 form.onsubmit = async function(event){
     event.preventDefault();
 
-    if(dataMode){
-        await updateNote()
+    const value = event.submitter.value;
+
+    if(value ==="Cancel"){
+        closeModal();
     }else{
-        await createNote()
+        if(dataMode){
+            await updateNote()
+        }else{
+            await createNote()
+        }
     }
+
+
 };
 
 async function fetchNotebooks(){
@@ -235,7 +243,3 @@ function closeModal(){
 openForm.addEventListener('click', () => {
     openModal();
 });
-
-closeForm.addEventListener('click', () => {
-    closeModal();
-})
