@@ -274,7 +274,7 @@ async function showSelectFolders(){
         folderMap.set( folder.folder_id, folder.folder_name);
     })
     const options = Array.from(folderMap.entries()).map(([id, folderName]) => {
-        return `<option value="${id}">${folderName}</option>`;
+        return `<option class="option-folders" value="${id}">${folderName}</option>`;
     });
     return options
 }
@@ -289,9 +289,6 @@ document.addEventListener('DOMContentLoaded', () =>{
     showNotebook();
     fetchFolders();
     showFolders();
-    showSelectFolders().then(options =>
-        console.log(options)
-    )
 })
 
 logoutButton.addEventListener('click', () => {
