@@ -11,6 +11,8 @@ let createFolderButton = document.getElementById('create-folder');
 let dropdownContent = document.getElementsByClassName('dropdown-content-menu')[0];
 let addFolderButton = document.getElementById('add-folder-button');
 let addFolderForm = document.getElementById('add-folder-form');
+let addToFolderButton = document.getElementById('add-to-folder-button')
+const folderContainer = document.getElementById('folders-notebook');
 
 form.onsubmit = async function(event){
     event.preventDefault();
@@ -50,7 +52,11 @@ async function showNotebook(){
     const notebook = await fetchNotebooks();
     const user = decodeJWT();
     const account_id = user.account_id;
-    tableNotes.style.display = "none"
+
+    tableNotes.style.display = "none";
+    const options = await showSelectFolders();
+
+
     notebook.forEach(note => {
         if(note.account_id === account_id){
             noEntries.style.display = "none";
@@ -59,6 +65,8 @@ async function showNotebook(){
             ? note.description.slice(0,30) + "..."
             : note.description;
     
+
+
             tBody.innerHTML += 
             `
             <tr class="notebook-single-tr">
@@ -70,11 +78,14 @@ async function showNotebook(){
                         <i title="Delete" onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
                        
                         <div id="dropdown">
-                        <i title="Dropdown" onClick="showDropdownTable(this)" class="fa-solid fa-ellipsis"></i>
-                        <div id="myDropdown" class="dropdown-content">
-                            <a class="add-to-folder "href="#">Add to folder</a>
-                            <a class="like-this-note" href="#">Like this note</a>
-                        </div>
+                            <i title="Dropdown" onClick="showDropdownTable(this)" class="fa-solid fa-ellipsis"></i>
+                            <div id="myDropdown" class="dropdown-content">
+                            <a id="add-to-folder-button" class="add-to-folder "href="#">Add to folder</a>
+                            <select id="folder-select">
+                                ${options.join('')}
+                            </select>
+                                <a class="like-this-note" href="#">Like this note</a>
+                            </div>
                         </div>
                     </td>
                 </div>
@@ -225,6 +236,49 @@ async function createFolder(){
     }
 }
 
+async function fetchFolders(){
+    let user = decodeJWT();
+    let user_id = user.account_id;
+    try{ 
+        const response = await fetch(`${APIUrl}/fetchFolders`, {
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify({account_id:user_id})
+    })
+        const folders = await response.json();
+        return folders;
+}catch(error){
+    console.error(error)
+}
+}
+
+async function showFolders(){
+    const allFolders = await fetchFolders();
+
+    allFolders.forEach(folder => {
+        folderContainer.innerHTML += 
+        `
+            <div id="single-folder" class="single-folder-container button" data-id="${folder.folder_id}">
+                <p>${folder.folder_name} + ${folder.folder_id}</p>
+            </div>
+        `
+    })
+}
+
+async function showSelectFolders(){
+    const allFolders = await fetchFolders();
+    const folderMap = new Map();
+    allFolders.forEach(folder => {
+        folderMap.set( folder.folder_id, folder.folder_name);
+    })
+    const options = Array.from(folderMap.entries()).map(([id, folderName]) => {
+        return `<option value="${id}">${folderName}</option>`;
+    });
+    return options
+}
+
 
 document.addEventListener('DOMContentLoaded', () =>{
     const token = sessionStorage.getItem('validationToken');
@@ -233,6 +287,11 @@ document.addEventListener('DOMContentLoaded', () =>{
         window.location.href="login.html";
     }
     showNotebook();
+    fetchFolders();
+    showFolders();
+    showSelectFolders().then(options =>
+        console.log(options)
+    )
 })
 
 logoutButton.addEventListener('click', () => {
@@ -280,4 +339,3 @@ createFolderButton.addEventListener('click', () => {
         dropdownContent.style.display ="";
     }
 })
-

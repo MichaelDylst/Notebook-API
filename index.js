@@ -164,3 +164,15 @@ app.post('/addFolder', async(req,res) => {
   res.status(500).json({ error: 'Folder Creation Failed'});
 }
 })
+
+app.post('/fetchFolders', async (req,res) => {
+  const {account_id} = req.body;
+  try{
+    const query = 'SELECT * FROM folders WHERE account_id = $1';
+    const values = [account_id]
+    const result = await client.query(query, values)
+    res.json(result.rows); 
+  } catch(error){
+    console.log(error)
+  }
+});  

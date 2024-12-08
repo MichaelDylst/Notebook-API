@@ -53,7 +53,6 @@ body{
     margin-right:16px;
     margin-top: 2.5rem;
     border-radius: 16px;
-    
 }
 
 .title-field{
@@ -116,6 +115,29 @@ body{
 #cancel-button{
     background-color: hsl(0, 85%, 79%);
     width:100%;
+}
+
+#folders-notebook{
+    display:none;
+}
+.folders-notebook-container{
+    margin-top: 2rem;
+    width:20%;
+    height:50%;
+}
+
+.single-folder-container{
+    display:flex;
+    flex: 1;
+    flex-flow: column;
+    justify-content: space-between;
+    background-color: rgb(237, 242, 250);
+    border: 1px solid rgba(58, 129, 242, 0.5) ;
+    border-radius: 4px;
+    margin: 4px;
+    max-width: 150px;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .notebook-entries{
@@ -312,3 +334,4 @@ i{
 .dropdown-content-menu a:active{
     transform:scale(0.95);
 }
+
