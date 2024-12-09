@@ -9,9 +9,11 @@
 
 <body>
     <div class="complete-page">
-    <div class="account-tab">
+    <div id="account-container" class="account-tab">
+        <button id="back-to-folders" class="button">Back to folders</button>
         <button id="create-note-button" class="button" form="form-notebook-identifier" type="button">Create Note</button>
         <div id="dropdown-menu">
+            
             <button id="create-folder" class="button">Create Folder</button>
             <div class="dropdown-content-menu">
                 <form id="add-folder-form">
@@ -34,7 +36,9 @@
             </div>
 
             <div id="folders-notebook" class="folders-notebook-container">
-                
+                <div id="single-folder" class="single-folder-container button">
+                    <p>All notes</p>
+                </div>
             </div>
 
         <table cellspacing="0" cellpadding="0" id="table-notebook">

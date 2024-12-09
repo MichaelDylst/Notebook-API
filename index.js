@@ -48,9 +48,9 @@ app.delete('/delete', async (req, res) =>{
 
 app.patch('/update', async (req,res) => {
   try{
-    const {id, title, description} = req.body;
-    const query =  `UPDATE notebook SET title= $2, description= $3 WHERE id = $1`;
-    const values = [id, title, description];
+    const {id, title, description, folder_id} = req.body;
+    const query =  `UPDATE notebook SET title= $2, description= $3 WHERE id = $1 AND folder_id=$4`;
+    const values = [id, title, description,folder_id];
     const result = await client.query(query, values);
 
     res.json({message: 'Data successfully updated!', note: result.rows[0]})
@@ -176,3 +176,18 @@ app.post('/fetchFolders', async (req,res) => {
     console.log(error)
   }
 });  
+
+app.patch('/updateFolder', async(req,res)=>{
+  const{note_id, folder_id} = req.body;
+  if (!note_id || !folder_id) {
+    return res.status(400).json({ error: 'Missing note_id or folder_id' })};
+  try{
+    const query = 'UPDATE notebook SET folder_id = $2 WHERE id = $1 RETURNING folder_id'
+    const values = [note_id, folder_id];
+    const result = await client.query(query, values);
+
+    res.status(200).json({ message: 'Folder successfully updated', note: result.rows[0] });
+  }catch(error){
+    console.log(error)
+  }
+})

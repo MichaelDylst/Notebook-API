@@ -3,6 +3,7 @@ let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
+let folder_id = null;
 let logoutButton = document.getElementById('logout-button');
 let modal = document.getElementById('form-notebook-identifier');
 let createNoteButton = document.getElementById('create-note-button');
@@ -11,20 +12,25 @@ let createFolderButton = document.getElementById('create-folder');
 let dropdownContent = document.getElementsByClassName('dropdown-content-menu')[0];
 let addFolderButton = document.getElementById('add-folder-button');
 let addFolderForm = document.getElementById('add-folder-form');
-let addToFolderButton = document.getElementById('add-to-folder-button')
+let addToFolderButton = document.getElementById('add-to-folder-button');
+let allNotes = document.getElementById('all-notes-container');
+let backToFolderButton = document.getElementById('back-to-folders')
+
 const folderContainer = document.getElementById('folders-notebook');
 
 form.onsubmit = async function(event){
     event.preventDefault();
 
     const value = event.submitter.value;
-    console.log(value)
 
     if(value ==="Cancel"){
         closeModal();
-    }else{
+    }else if(value ==="Save"){
         if(dataMode){
+            console.log("I'm in the right space.")
             await updateNote()
+            closeModal();
+            location.reload();
         }else{
             await createNote()
         }
@@ -42,35 +48,43 @@ async function fetchNotebooks(){
     return notebooks;
 }
 
-async function showNotebook(){
+async function showNotebook(folderID){
     let titleField = document.getElementById("title-field");
     let textAreaField = document.getElementById("text-area-field");
     let tableNotes = document.getElementById('table-notebook');
-    let noEntries = document.getElementById('no-notebook-entries')
+    let noEntries = document.getElementById('no-notebook-entries');
+    let folders = document.getElementById('folders-notebook');
     titleField.value = "";
     textAreaField.value = "";
     const notebook = await fetchNotebooks();
     const user = decodeJWT();
     const account_id = user.account_id;
-
-    tableNotes.style.display = "none";
+  
     const options = await showSelectFolders();
 
+    const filteredNotes = folderID
+        ? notebook.filter(note => note.account_id === account_id && note.folder_id == folderID)
+        : notebook.filter(note => note.account_id === account_id);
 
-    notebook.forEach(note => {
-        if(note.account_id === account_id){
+    if(filteredNotes.length === 0 ){
+        alert("There are no notes in this folder.");
+        return;
+    }
+
+    Object.values(filteredNotes).forEach(note => {
+        if(filteredNotes.length > 0){
             noEntries.style.display = "none";
+            folders.style.display = "none"
             tableNotes.style.display = "";
             const limitedDescription = note.description.length > 100
             ? note.description.slice(0,30) + "..."
             : note.description;
     
-
-
             tBody.innerHTML += 
             `
-            <tr class="notebook-single-tr">
-                <div class="notebook-single-element" data-id="${note.id}" id="notebook-single-container">
+            
+            <tr class="notebook-single-tr" data-id="${note.id}" data-folder-id=${note.folder_id}>
+              <div class="notebook-single-element" id="notebook-single-container">  
                     <td class="title-container">${note.title}</td>
                     <td class="description-container">${note.description}</td>
                     <td class="actions">
@@ -81,20 +95,20 @@ async function showNotebook(){
                             <i title="Dropdown" onClick="showDropdownTable(this)" class="fa-solid fa-ellipsis"></i>
                             <div id="myDropdown" class="dropdown-content">
                             <a id="add-to-folder-button" class="add-to-folder "href="#">Add to folder</a>
-                            <select id="folder-select">
+                            <select id="folder-select" class="folder-select-container" data-note-id="${note.id}">
                                 ${options.join('')}
                             </select>
                                 <a class="like-this-note" href="#">Like this note</a>
-                            </div>
+                        
                         </div>
                     </td>
                 </div>
-            </tr>
-            `
+             </tr>
+ 
+            ` 
         }else{
-            tableNotes.style.display = "none";
+            alert("There are no notes in this folder.")
         }
-
     })};
 
 async function deleteNote(){
@@ -104,7 +118,7 @@ async function deleteNote(){
             if(event.target.classList.contains('fa-trash-alt')){
                 event.stopPropagation();
                 const noteContainer = event.target.closest('.notebook-single-tr');
-                const noteId = noteContainer.nextElementSibling.getAttribute('data-id');
+                const noteId = noteContainer.attributes["data-id"].value;``
 
                 try{
                     const response = await fetch(`${APIUrl}/delete`,{
@@ -133,20 +147,18 @@ async function updateNote(){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
 
-    const response = await fetch(`${APIUrl}/update`, {
+    try{const response = await fetch(`${APIUrl}/update`, {
         method:'PATCH', 
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({id: selectedNoteId, title: titleField, description: textAreaField})
+        body: JSON.stringify({id: selectedNoteId, title: titleField, description: textAreaField, folder_id:folder_id})
     })
-    if (!response.ok) {
-    throw new Error(response.message);
+        const result = await response.json();
+        alert(result.message)
+    }catch(error){
+        console.error(error)
     }
-
-    const result = await response.json();
-
-    location.reload()
 }
 
 function fetchNote(){
@@ -160,10 +172,12 @@ function fetchNote(){
         if(event.target.classList.contains("fa-edit")){
             event.stopPropagation();
             const noteContainer = event.target.closest('.notebook-single-tr');
-            selectedNoteId = noteContainer.nextElementSibling.getAttribute('data-id');
+            selectedNoteId = noteContainer.attributes["data-id"].value;
+            console.log(selectedNoteId)
+            folder_id = noteContainer.attributes["data-folder-id"].value;
             const title = noteContainer.querySelector('.title-container').textContent;
             const description = noteContainer.querySelector('.description-container').textContent;
-            
+
             titleField.value = title;
             textAreaField.value = description;
             openModal();
@@ -186,7 +200,10 @@ async function createNote(){
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({title: titleField, description: textAreaField, account_id:account_id})
-    })}catch(error){
+    })  
+        const result = await response.json();
+        alert(result.message)
+}catch(error){
             alert("There was an error. Please try again.")
             console.error(error);
     }
@@ -231,6 +248,7 @@ async function createFolder(){
         if(result){
             alert(result.message)
         }
+        location.reload();
     }catch(error){
         console.error(error)
     }
@@ -257,11 +275,21 @@ async function fetchFolders(){
 async function showFolders(){
     const allFolders = await fetchFolders();
 
+    if(allFolders.length > 0){
+        let noEntries = document.getElementById('no-notebook-entries');
+        let folders = document.getElementById('folders-notebook');
+        let tableNotes = document.getElementById('table-notebook');
+        noEntries.style.display="none";
+        folders.style.display="block";
+        tableNotes.style.display="none"
+
+    }
+
     allFolders.forEach(folder => {
         folderContainer.innerHTML += 
         `
             <div id="single-folder" class="single-folder-container button" data-id="${folder.folder_id}">
-                <p>${folder.folder_name} + ${folder.folder_id}</p>
+                <p>${folder.folder_name}</p>
             </div>
         `
     })
@@ -279,22 +307,22 @@ async function showSelectFolders(){
     return options
 }
 
-
-document.addEventListener('DOMContentLoaded', () =>{
-    const token = sessionStorage.getItem('validationToken');
-    if(!token){
-        alert("You're not logged in, please log in.")
-        window.location.href="login.html";
+async function addNoteToFolder(noteId, folderId){
+    try{
+        const response = await fetch(`${APIUrl}/updateFolder`, {
+            method:'PATCH',
+            headers:{
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({note_id:noteId, folder_id: folderId})
+        })
+        const result = await response.json()
+        alert(result.message)
+    }catch(error){
+        console.error(error)
     }
-    showNotebook();
-    fetchFolders();
-    showFolders();
-})
+}
 
-logoutButton.addEventListener('click', () => {
-    sessionStorage.removeItem('validationToken');
-    changePage();
-})
 
 function showDropdownTable(){
     const tBodyContainer = document.getElementById('table-body');
@@ -326,6 +354,7 @@ function closeModal(){
 }
 
 createNoteButton.addEventListener('click', (event) => {
+    dataMode = false;
     openModal();
 });
 
@@ -335,4 +364,46 @@ createFolderButton.addEventListener('click', () => {
     }else{
         dropdownContent.style.display ="";
     }
+})
+
+logoutButton.addEventListener('click', () => {
+    sessionStorage.removeItem('validationToken');
+    changePage();
+})
+
+document.addEventListener('click', function(event){
+    if (event.target && event.target.id === "add-to-folder-button"){
+        event.preventDefault();
+        const folderSelect = event.target.closest('.dropdown-content').querySelector('#folder-select');
+        const noteId = folderSelect.dataset.noteId;
+        const folderId = folderSelect.value;
+        addNoteToFolder(noteId, folderId)
+    }
+})
+
+document.addEventListener('click', function(event){
+    if(event.target && event.target.id ==="single-folder"){
+        const selectedFolder = event.target.closest(".single-folder-container");
+        const folderID = selectedFolder.dataset.id;
+        showNotebook(folderID)
+    }else if(event.target && event.target.id ==="all-notes-container"){
+    }
+} )
+
+backToFolderButton.addEventListener('click', function(){
+    let folders = document.getElementById('folders-notebook');
+    let tableNotes = document.getElementById('table-notebook');
+    folders.style.display="block";
+    tableNotes.style.display="none"
+    location.reload();
+})
+
+document.addEventListener('DOMContentLoaded', () =>{
+    const token = sessionStorage.getItem('validationToken');
+    if(!token){
+        alert("You're not logged in, please log in.")
+        window.location.href="login.html";
+    }
+    fetchFolders();
+    showFolders();
 })

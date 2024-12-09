@@ -117,9 +117,6 @@ body{
     width:100%;
 }
 
-#folders-notebook{
-    display:none;
-}
 
 .folders-notebook-container{
     margin-top: 2rem;
@@ -175,6 +172,7 @@ table {
     overflow: auto;
     border-spacing:0 6px;
     width:60%;
+
 }
 
 thead{
@@ -336,3 +334,9 @@ i{
     transform:scale(0.95);
 }
 
+select{
+    background-color:hsl(225, 79%, 92%);
+    width:90%;
+    border:none;
+    border-radius: 4px;
+}
