@@ -27,23 +27,25 @@ body{
 }
 
 .table-form{
+    position:relative;
     display:flex;
     justify-content: center;
+    width:100%;
+    height:auto;
 }
 
 #form-notebook-identifier{
     display:none;
-    position:fixed;
+    justify-content: center;
+    position:absolute;
     z-index:1;
     background-color: rgba(14, 115, 239, 0.4);
+    width: 100%;
+    height:100%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
-.form-notebook{
-    display: flex;
-    justify-content: center;
-    height:600px;
-    width:100%;
-}
 
 .notebook-container{
     display: flex;
