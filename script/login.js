@@ -56,7 +56,7 @@ async function loginUser(){
         if(result.syncToken){
             let validationToken = result.syncToken;
             sessionStorage.setItem('validationToken', validationToken);
-            window.location.href = "index.html"
+            window.location.href = "folder.html"
         }else{
             alert("Unexpected error: Wrong Password!")
         }

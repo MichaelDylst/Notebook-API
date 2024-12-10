@@ -48,9 +48,9 @@ app.delete('/delete', async (req, res) =>{
 
 app.patch('/update', async (req,res) => {
   try{
-    const {id, title, description, folder_id} = req.body;
-    const query =  `UPDATE notebook SET title= $2, description= $3 WHERE id = $1 AND folder_id=$4`;
-    const values = [id, title, description,folder_id];
+    const {id, title, description} = req.body;
+    const query =  `UPDATE notebook SET title= $2, description= $3 WHERE id = $1`;
+    const values = [id, title, description];
     const result = await client.query(query, values);
 
     res.json({message: 'Data successfully updated!', note: result.rows[0]})
@@ -100,7 +100,7 @@ app.get('/fetchUsers', async (req,res) => {
     const result = await client.query('SELECT * FROM account ORDER BY account_id ASC');
     res.json(result.rows);
   } catch(error){
-    console.log(error)
+    console.error(error)
   }
 });
 
@@ -173,7 +173,7 @@ app.post('/fetchFolders', async (req,res) => {
     const result = await client.query(query, values)
     res.json(result.rows); 
   } catch(error){
-    console.log(error)
+    console.error(error)
   }
 });  
 
@@ -188,6 +188,38 @@ app.patch('/updateFolder', async(req,res)=>{
 
     res.status(200).json({ message: 'Folder successfully updated', note: result.rows[0] });
   }catch(error){
-    console.log(error)
+    console.error(error)
+  }
+})
+
+app.post('/getSpecificFolder', async(req,res)=>{
+  const{account_id, folder_id} = req.body;
+  try{
+    const query = 'SELECT * FROM notebook WHERE account_id = $1 AND folder_id = $2'
+    const values = [account_id, folder_id];
+    const result = await client.query(query,values);
+    if(result.rows.length === 0){
+      res.status(404).json({message: 'No notes found in this folder', notes: []})
+    }else{
+      res.status(200).json({message:'Notes successfully retrieved, go to index.html', notes: result.rows})
+    }
+  }catch(error){
+    console.error(error)
+  }
+})
+
+app.post('/getAllNotes', async(req,res)=>{
+  const{account_id} = req.body;
+  try{
+    const query = 'SELECT * FROM notebook WHERE account_id = $1 ORDER BY id ASC';
+    const values = [account_id];
+    const result = await client.query(query, values);
+    if(result.rows.length === 0){
+      res.status(404).json({message: 'No notes found for this account', notes: []})
+    }else{
+      res.status(200).json({message:'Notes successfully retrieved, go to index.html', notes: result.rows})
+    }
+  }catch(error){
+    console.error(error)
   }
 })

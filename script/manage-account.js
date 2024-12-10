@@ -1,3 +1,4 @@
+
 let welcomeMessage = document.getElementById('username-p');
 let showPassword = false;
 let newPasswordShow = document.getElementById('new-password-show');

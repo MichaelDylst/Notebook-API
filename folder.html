@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notebook</title>
+    <link rel="stylesheet" href="style/style-folder.css">
+</head>
+
+<body>
+    <div class="complete-page">
+    <div id="account-container" class="account-tab">
+
+        <div id="dropdown-menu">
+            <button id="create-folder" class="button">Create Folder</button>
+            <div class="dropdown-content-menu">
+                <form id="add-folder-form">
+                <label for="folder-name" class="label-folder">Folder name</label>
+              <input type="text" id="folder-name" name="folder">
+              <input type="submit" id ="add-folder-button" class="button" value="Add Folder">
+            </form>
+            </div>
+          </div>
+
+        <a class="button" href="manage-account.html">Manage Account</a>
+        <button id="logout-button" class="button">Logout</button>
+    </div>
+    <div class="table-form">
+        <div id="notebook" class="notebook-entries">
+
+
+            <div id="folders-notebook" class="folders-notebook-container">
+                    <button id="all-notes" class="all-notes-button button">ALL NOTES</button>
+            </div>
+    </div>
+    
+
+
+</div>
+<script src="script/folder.js" type="module"></script>
+</body>
+</html>
