@@ -100,7 +100,7 @@ app.get('/fetchUsers', async (req,res) => {
     const result = await client.query('SELECT * FROM account ORDER BY account_id ASC');
     res.json(result.rows);
   } catch(error){
-    console.log(error)
+    console.error(error)
   }
 });
 
@@ -152,3 +152,74 @@ app.patch('/changePassword', async (req,res) => {
     }
 });
 
+app.post('/addFolder', async(req,res) => {
+  const{account_id, folder_name} = req.body;
+  try{ 
+  const query = 'INSERT INTO folders(folder_name, account_id) VALUES ($2, $1) RETURNING folder_name, account_id'
+  const values = [account_id, folder_name]
+  const result = await client.query(query, values);
+  res.json({message: 'Folder successfully added!', note: result.rows[0]})
+}catch(error){
+  console.error(error);
+  res.status(500).json({ error: 'Folder Creation Failed'});
+}
+})
+
+app.post('/fetchFolders', async (req,res) => {
+  const {account_id} = req.body;
+  try{
+    const query = 'SELECT * FROM folders WHERE account_id = $1';
+    const values = [account_id]
+    const result = await client.query(query, values)
+    res.json(result.rows); 
+  } catch(error){
+    console.error(error)
+  }
+});  
+
+app.patch('/updateFolder', async(req,res)=>{
+  const{note_id, folder_id} = req.body;
+  if (!note_id || !folder_id) {
+    return res.status(400).json({ error: 'Missing note_id or folder_id' })};
+  try{
+    const query = 'UPDATE notebook SET folder_id = $2 WHERE id = $1 RETURNING folder_id'
+    const values = [note_id, folder_id];
+    const result = await client.query(query, values);
+
+    res.status(200).json({ message: 'Folder successfully updated', note: result.rows[0] });
+  }catch(error){
+    console.error(error)
+  }
+})
+
+app.post('/getSpecificFolder', async(req,res)=>{
+  const{account_id, folder_id} = req.body;
+  try{
+    const query = 'SELECT * FROM notebook WHERE account_id = $1 AND folder_id = $2'
+    const values = [account_id, folder_id];
+    const result = await client.query(query,values);
+    if(result.rows.length === 0){
+      res.status(404).json({message: 'No notes found in this folder', notes: []})
+    }else{
+      res.status(200).json({message:'Notes successfully retrieved, go to index.html', notes: result.rows})
+    }
+  }catch(error){
+    console.error(error)
+  }
+})
+
+app.post('/getAllNotes', async(req,res)=>{
+  const{account_id} = req.body;
+  try{
+    const query = 'SELECT * FROM notebook WHERE account_id = $1 ORDER BY id ASC';
+    const values = [account_id];
+    const result = await client.query(query, values);
+    if(result.rows.length === 0){
+      res.status(404).json({message: 'No notes found for this account', notes: []})
+    }else{
+      res.status(200).json({message:'Notes successfully retrieved, go to index.html', notes: result.rows})
+    }
+  }catch(error){
+    console.error(error)
+  }
+})

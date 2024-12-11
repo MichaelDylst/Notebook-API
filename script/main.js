@@ -1,67 +1,82 @@
-const APIUrl = 'http://localhost:3000'
+import * as Modules from "../modules/module.js";
+
+const APIUrl = 'http://localhost:3000';
 let form = document.getElementById('form-notebook-identifier');
 let tBody = document.getElementById('table-body');
 let dataMode = false;
 let selectedNoteId = null;
-let logoutButton = document.getElementById('logout-button');
+let folder_id = null;
+let createNoteButton = document.getElementById('create-note-button');
+let tableNotes = document.getElementById('table-notebook');
+
+Modules.backToFolderPage(Modules.backToFolderButton);
+Modules.logout();
+Modules.toggleDropdown();
+Modules.setupAddFolderForm(Modules.addFolderForm, Modules.createFolder);
+Modules.handleAddToFolder();
 
 form.onsubmit = async function(event){
     event.preventDefault();
 
-    if(dataMode){
-        await updateNote()
-    }else{
-        await createNote()
+    const value = event.submitter.value;
+    if(value ==="Cancel"){
+        Modules.closeModal();
+    }else if(value ==="Save"){
+        if(dataMode){
+            await updateNote();
+            Modules.closeModal();
+            await Modules.refreshAllNotes();
+            location.reload();
+        }else{
+            await createNote()
+            await Modules.refreshAllNotes();
+            location.reload();
+        }
     }
 };
 
-async function fetchNotebooks(){
-    const response = await fetch(`${APIUrl}/notebook`);
-    const notebooks = await response.json();
-    return notebooks;
-}
-
 async function showNotebook(){
-    let titleField = document.getElementById("title-field");
-    let textAreaField = document.getElementById("text-area-field");
-
-    titleField.value = "";
-    textAreaField.value = "";
-    const notebook = await fetchNotebooks();
-    const user = decodeJWT();
-    const account_id = user.account_id;
-
-    notebook.forEach(note => {
-        if(note.account_id === account_id){
-            const limitedDescription = note.description.length > 100
-            ? note.description.slice(0,30) + "..."
-            : note.description;
-    
+    let storedNotes = sessionStorage.getItem('folderNotes');
+    const notesArray = JSON.parse(storedNotes);
+    const options = await Modules.createOptionsSelectedFolders();
+    notesArray.forEach(note => {
+        if(notesArray.length > 0){
             tBody.innerHTML += 
             `
-            <tr class="notebook-single-tr">
-                <div class="notebook-single-element" data-id="${note.id}">
+            <tr class="notebook-single-tr" data-id="${note.id}" data-folder-id=${note.folder_id}>
+              <div class="notebook-single-element" id="notebook-single-container">  
                     <td class="title-container">${note.title}</td>
                     <td class="description-container">${note.description}</td>
                     <td class="actions">
-                        <i onClick="fetchNote(this)" class="fas fa-edit"></i>
-                        <i onClick="deleteNote(this)" class="fas fa-trash-alt"></i>
+                        <i title="Edit"  class="fas fa-edit"></i>
+                        <i title="Delete"  class="fas fa-trash-alt"></i>
+                       
+                        <div id="dropdown">
+                            <i title="Dropdown"  class="fa-solid fa-ellipsis"></i>
+                            <div id="myDropdown" class="dropdown-content">
+                            <a id="add-to-folder-button" class="add-to-folder "href="#">Add to folder</a>
+                            <select id="folder-select" class="folder-select-container" data-note-id="${note.id}">
+                                ${options.join('')}
+                            </select>
+                                <a class="like-this-note" href="#">Like this note</a>
+                        
+                        </div>
                     </td>
                 </div>
-            </tr>
-            `
+             </tr>
+ 
+             ` 
         }
-
     })};
 
-async function deleteNote(){
-    const tBodyContainer = document.getElementById('table-body');
+document.getElementById('table-body').addEventListener('click', async function (event) {
 
-        tBodyContainer.addEventListener('click', async function (event) {
-            if(event.target.classList.contains('fa-trash-alt')){
+    let titleField = document.getElementById("title-field");
+    let textAreaField = document.getElementById("text-area-field");
+    if(event.target.classList.contains('fa-trash-alt')){
                 event.stopPropagation();
                 const noteContainer = event.target.closest('.notebook-single-tr');
-                const noteId = noteContainer.nextElementSibling.getAttribute('data-id');
+                const noteId = noteContainer.attributes["data-id"].value;``
 
                 try{
                     const response = await fetch(`${APIUrl}/delete`,{
@@ -74,64 +89,66 @@ async function deleteNote(){
                 })
                     const result = await response.json();
                     noteContainer.remove()
-                    alert("Note deleted sucessfully")
+                    await Modules.refreshAllNotes();
+                    alert("Note deleted successfully");
+                    
                 }
                 catch(error){
                     console.error(error)
                     alert("There was an error. Please try again.", error)
                 }}
 
-            });
-}
+    else if(event.target.classList.contains('fa-edit')){
+
+        Modules.openModal();
+        dataMode = true;
+        event.stopPropagation();
+        const noteContainer = event.target.closest('.notebook-single-tr');
+        selectedNoteId = noteContainer.attributes["data-id"].value;
+        folder_id = noteContainer.attributes["data-folder-id"].value;
+        const title = noteContainer.querySelector('.title-container').textContent;
+        const description = noteContainer.querySelector('.description-container').textContent;
+
+        titleField.value = title;
+        textAreaField.value = description;
+    }else if(event.target.classList.contains('fa-ellipsis')){
+        event.stopPropagation();
+        const noteRow = event.target.closest('.notebook-single-tr');
+        const dropdownContent = noteRow.querySelector('.dropdown-content');
+        if(dropdownContent){
+            if(dropdownContent.style.display === ""){
+                dropdownContent.style.display ="block";
+            }else{
+                dropdownContent.style.display ="";
+            }
+        }
+    }
+    });
 
 
 async function updateNote(){
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
 
-    const response = await fetch(`${APIUrl}/update`, {
+    try{const response = await fetch(`${APIUrl}/update`, {
         method:'PATCH', 
         headers: {
             'Content-type': 'application/json'
         },
         body: JSON.stringify({id: selectedNoteId, title: titleField, description: textAreaField})
     })
-    if (!response.ok) {
-    throw new Error(response.message);
+        const result = await response.json();
+        alert(result.message)
+    }catch(error){
+        console.error(error)
     }
-
-    const result = await response.json();
-
-    location.reload()
 }
-
-function fetchNote(){
-    dataMode = true;
-    let titleField = document.getElementById("title-field");
-    let textAreaField = document.getElementById("text-area-field");
-    
-    const tBodyContainer = document.getElementById('table-body');
-
-    tBodyContainer.addEventListener('click', function(event){
-        if(event.target.classList.contains("fa-edit")){
-            event.stopPropagation();
-            const noteContainer = event.target.closest('.notebook-single-tr');
-            selectedNoteId = noteContainer.nextElementSibling.getAttribute('data-id');
-            const title = noteContainer.querySelector('.title-container').textContent;
-            const description = noteContainer.querySelector('.description-container').textContent;
-            
-            titleField.value = title;
-            textAreaField.value = description;
-        }
-    }, {once:true});
-
-};
 
 async function createNote(){
     dataMode = false;
     let titleField = document.getElementById("title-field").value;
     let textAreaField = document.getElementById("text-area-field").value;
-    const user = decodeJWT();
+    const user = Modules.decodeJWT();
     const account_id = user.account_id;
     
     try{
@@ -141,46 +158,28 @@ async function createNote(){
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({title: titleField, description: textAreaField, account_id:account_id})
-    })}catch(error){
+    })  
+        const result = await response.json();
+        alert(result.message)
+        Modules.closeModal();
+}catch(error){
             alert("There was an error. Please try again.")
             console.error(error);
     }
-    textAreaField.value = "";
-    titleField.value = "";
-    location.reload();
-}
-
-function decodeJWT(){
-    const token = sessionStorage.getItem('validationToken');
-    if(!token){
-        return;
-    }
-
-    const base64URL = token.split(".")[1];
-    const base64 = base64URL.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
-}
-
-function changePage(){
-    if(window.location.href === "login.html"){
-        window.location.href = "index.html";
-    }else{
-        window.location.href = "login.html"
-    }
-
 }
 
 
-document.addEventListener('DOMContentLoaded', () =>{
+
+createNoteButton.addEventListener('click', (event) => {
+    dataMode = false;
+    Modules.openModal();
+});
+
+window.onload = async function () {
     const token = sessionStorage.getItem('validationToken');
     if(!token){
         alert("You're not logged in, please log in.")
         window.location.href="login.html";
     }
-    showNotebook();
-})
-
-logoutButton.addEventListener('click', () => {
-    sessionStorage.removeItem('validationToken');
-    changePage();
-})
+    await showNotebook();
+}

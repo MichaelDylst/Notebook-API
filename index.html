@@ -9,39 +9,56 @@
 
 <body>
     <div class="complete-page">
-    <div class="account-tab">
-        <a class="clickMe" href="manage-account.html">Manage Account</a>
-        <button id="logout-button" class="button">Logout</button>
-    </div>
-    <div class="table-form"> 
-        <div id="notebook" class="notebook-entries">
-        <table cellspacing="0" cellpadding="0">
-            <thead>
-                <tr>                
-                    <th scope="col">Title</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                
-            </tbody>
-        </table>
-    </div>
+        <div id="account-container" class="account-tab">
+            <button id="back-to-folders" class="button">Back to folders</button>
+            <button id="create-note-button" class="button" form="form-notebook-identifier" type="button">Create Note</button>
+            <p id="message"></p>
+            <div id="dropdown-menu">
+                <button id="create-folder" class="button">Create Folder</button>
+                <div class="dropdown-content-menu">
+                    <form id="add-folder-form">
+                    <label for="folder-name" class="label-folder">Folder name</label>
+                <input type="text" id="folder-name" name="folder">
+                <input type="submit" id ="add-folder-button"class="button" value="Add Folder">
+                </form>
+                </div>
+            </div>
+            <a class="button" href="manage-account.html">Manage Account</a>
+            <button id="logout-button" class="button">Logout</button>
+        </div>
+
+        <div class="table-form">
+            <table cellspacing="0" cellpadding="0" id="table-notebook">
+                <thead>
+                    <tr class="heading-table">                
+                        <th class="title-table" scope="col">Title</th>
+                        <th class="description-table" scope="col">Description</th>
+                        <th class="actions-table" scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+      
     
 
-    <form id="form-notebook-identifier" class="form-notebook">
+        <form id="form-notebook-identifier" class="form-notebook">
         <div class="notebook-container">
+
             <input type="text" id="title-field" class="title-field" placeholder="Title" required>
             <textarea rows="" id="text-area-field" class="description-field" placeholder="Description" required></textarea>
-            <input type="submit" id="save-button" class="button" value="Save">  
+            <div id="button-container">            
+                <input type="submit" id="save-button" class="button" value="Save">
+                <input type="submit" id="cancel-button" class="button" value="Cancel">
+            </div>
         </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 </div>
 <script src="https://kit.fontawesome.com/c23b68ee2a.js" crossorigin="anonymous"></script>
 
-<script src="script/main.js"></script>
+<script src="script/main.js" type="module"></script>
 </body>
 </html>

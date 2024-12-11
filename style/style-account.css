@@ -20,6 +20,7 @@ body{
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(118, 143, 255, 0.5);
     border-top:16px solid rgb(121, 166, 243);
+    
 }
 
 .manage-account{
@@ -29,28 +30,36 @@ body{
     justify-content: end;
     width:100%;
     height:auto;
+    
+}
+
+.manage-account p{
+    color: rgb(83, 140, 236);
 }
 
 .manage-account h5{
     font-size: 1rem;
-    color: rgb(121, 166, 243);
+    color: rgb(71, 98, 145);
+    margin:0.5rem;
 }
 
 .password-container{
     display:flex;
     flex-direction: column;
     align-items: center;
+    color: rgb(45, 91, 170);
 }
 
 .password-container p {
     font-size: 0.8rem;
     font-weight: 600;
-    border-bottom: 3px solid hsl(216, 84%, 71%);
+    border-bottom: 1px solid hsl(216, 84%, 71%);
 }
 
 
 .password-single-container{
     margin-bottom: 16px;
+    color:hsl(216, 90%, 60%);
 }
 .password-single-container label{
     display:flex;
@@ -76,18 +85,18 @@ body{
 }
 
 .change-password-button, .change-page-button{
-    border: 1px solid  rgba(58, 129, 242, 0.5);
-    text-align: center;
+    border:none;
     background-color:rgb(237, 242, 250);
     color:rgb(58, 129, 242);
-    box-shadow: 0px 4px 8px rgba(216, 212, 213, 0.8);
-    border-radius: 16px;
-    padding: 8px;
+    border:1px solid rgba(58, 129, 242, 0.5);
+    border-radius: .3em;
+    padding: 0.5em;
     font-size: 0.8rem;
     font-weight:600;
-    margin-top:4px;
     text-decoration: none;
-    width:70%;
+    margin-right: 0.8rem;
+    font-weight:400;
+    margin-bottom: 4px;
 }
 .change-password-button:active, .change-page-button:active{
     transform:scale(0.95);
