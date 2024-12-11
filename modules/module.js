@@ -146,7 +146,26 @@ async function createOptionsSelectedFolders(){
     return options
 }
 
+async function refreshAllNotes(){
+    const user = decodeJWT();
+    const account_id = user.account_id;
+    try{
+        const response = await fetch(`${APIUrl}/getAllNotes`, {
+            method:'POST', 
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({account_id: account_id})
+        })
+        const result = await response.json();
+        sessionStorage.setItem('folderNotes', JSON.stringify(result.notes));
+    }catch(error){
+        console.error(error)
+    }
+}
+
+
 
 export{addFolderForm, backToFolderButton, openModal,
     closeModal, decodeJWT, setupAddFolderForm, fetchNotebooks, backToFolderPage, toggleDropdown, handleAddToFolder,
-    logout, fetchAllFolders, createOptionsSelectedFolders, createFolder}
+    logout, fetchAllFolders, createOptionsSelectedFolders, createFolder, refreshAllNotes}

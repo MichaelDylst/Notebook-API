@@ -23,11 +23,14 @@ form.onsubmit = async function(event){
         Modules.closeModal();
     }else if(value ==="Save"){
         if(dataMode){
-            await updateNote()
+            await updateNote();
             Modules.closeModal();
+            await Modules.refreshAllNotes();
             location.reload();
         }else{
             await createNote()
+            await Modules.refreshAllNotes();
+            location.reload();
         }
     }
 };
@@ -86,6 +89,7 @@ document.getElementById('table-body').addEventListener('click', async function (
                 })
                     const result = await response.json();
                     noteContainer.remove()
+                    await Modules.refreshAllNotes();
                     alert("Note deleted successfully");
                     
                 }
